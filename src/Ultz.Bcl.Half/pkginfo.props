@@ -1,0 +1,13 @@
+﻿<Project>
+    <PropertyGroup>
+        <Description>Provides the System.Half type on .NET versions that don't include it.</Description>
+        <Version>1.0.0</Version>
+        <LangVersion>8.0</LangVersion>
+        <PackageReleaseNotes>
+            Includes the dotnet/corefxlab implementation with some fixes and removals to sync it with dotnet/runtime.
+        </PackageReleaseNotes>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <RepositoryUrl>https://github.com/Ultz/Bcl</RepositoryUrl>
+        <RepositoryType>git</RepositoryType>
+    </PropertyGroup>
+</Project>
