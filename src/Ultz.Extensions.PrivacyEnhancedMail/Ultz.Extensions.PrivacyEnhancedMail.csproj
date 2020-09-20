@@ -1,0 +1,8 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFrameworks>netstandard20;net472;netcoreapp20;netstandard21</TargetFrameworks>
+    </PropertyGroup>
+
+    <Import Project="pkginfo.props" />
+</Project>
