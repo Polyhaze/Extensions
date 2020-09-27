@@ -146,5 +146,38 @@ namespace Ultz.Extensions.Logging
             opts.ScopeProvider = provider;
             return opts;
         }
+
+        /// <summary>
+        /// Clears all outputs currently present on the given logger object.
+        /// </summary>
+        /// <param name="opts">The logger object to configure.</param>
+        /// <returns>The instance passed in, for method chaining.</returns>
+        public static IUltzLoggerObject ClearOutputs(this IUltzLoggerObject opts)
+        {
+            opts.Outputs.Clear();
+            return opts;
+        }
+
+        /// <summary>
+        /// Clears all <see cref="LogLevel"/>s currently present on the given logger object.
+        /// </summary>
+        /// <param name="opts">The logger object to configure.</param>
+        /// <returns>The instance passed in, for method chaining.</returns>
+        public static IUltzLoggerObject ClearLogLevels(this IUltzLoggerObject opts)
+        {
+            opts.LogLevels.Clear();
+            return opts;
+        }
+
+        /// <summary>
+        /// Clears all <see cref="UltzLogger.LogLevelStrings"/> currently present on the given logger object.
+        /// </summary>
+        /// <param name="opts">The logger object to configure.</param>
+        /// <returns>The instance passed in, for method chaining.</returns>
+        public static IUltzLoggerObject ClearLogLevelStrings(this IUltzLoggerObject opts)
+        {
+            opts.LogLevelStrings.Clear();
+            return opts;
+        }
     }
 }

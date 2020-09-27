@@ -29,10 +29,9 @@ namespace Ultz.Extensions.Logging
         /// <inheritdoc />
         public void Dispose()
         {
-            Shutdown();
             _logMessages.Dispose();
+            Shutdown();
             _cancellationToken.Dispose();
-            _logTask.Dispose();
         }
 
         /// <inheritdoc />
@@ -88,14 +87,19 @@ namespace Ultz.Extensions.Logging
         private void CoreLog()
         {
             foreach (var message in _logMessages.GetConsumingEnumerable(_cancellationToken.Token))
-            foreach (var writer in Outputs)
             {
-                foreach (var (subMsg, colour) in Output.EnumerateSubMessages(message))
+                foreach (var writer in Outputs)
                 {
-                    writer.Write(subMsg, colour);
-                }
+                    lock (writer)
+                    {
+                        foreach (var (subMsg, colour) in Output.EnumerateSubMessages(message))
+                        {
+                            writer.Write(subMsg, colour);
+                        }
 
-                writer.Write(Environment.NewLine, null);
+                        writer.Write(Environment.NewLine, null);
+                    }
+                }
             }
         }
 
