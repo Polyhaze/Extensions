@@ -13,9 +13,9 @@ namespace Ultz.Extensions.Logging
     public static class UltzLoggerExtensions
     {
         /// <summary>
-        /// Adds the <see cref="UltzLoggerProvider"/> to the <see cref="ILoggingBuilder"/>'s <see cref="IServiceCollection"/>.
+        /// Adds the <see cref="UltzLoggerProvider" /> to the <see cref="ILoggingBuilder" />'s <see cref="IServiceCollection" />.
         /// </summary>
-        /// <param name="builder">The <see cref="ILoggingBuilder"/> to add the <see cref="UltzLoggerProvider"/> to.</param>
+        /// <param name="builder">The <see cref="ILoggingBuilder" /> to add the <see cref="UltzLoggerProvider" /> to.</param>
         /// <returns>The instance passed in, for method chaining.</returns>
         public static ILoggingBuilder AddUltzLogger(this ILoggingBuilder builder)
         {
@@ -25,10 +25,14 @@ namespace Ultz.Extensions.Logging
         }
 
         /// <summary>
-        /// Adds the <see cref="UltzLoggerProvider"/> to the <see cref="ILoggingBuilder"/>'s <see cref="IServiceCollection"/> with custom configuration.
+        /// Adds the <see cref="UltzLoggerProvider" /> to the <see cref="ILoggingBuilder" />'s <see cref="IServiceCollection" />
+        /// with custom configuration.
         /// </summary>
-        /// <param name="builder">The <see cref="ILoggingBuilder"/> to add the <see cref="UltzLoggerProvider"/> to.</param>
-        /// <param name="configure">A delegate called when constructing the <see cref="UltzLoggerProvider"/>. This is where the custom configuration should be added.</param>
+        /// <param name="builder">The <see cref="ILoggingBuilder" /> to add the <see cref="UltzLoggerProvider" /> to.</param>
+        /// <param name="configure">
+        /// A delegate called when constructing the <see cref="UltzLoggerProvider" />. This is where the
+        /// custom configuration should be added.
+        /// </param>
         /// <returns>The instance passed in, for method chaining.</returns>
         public static ILoggingBuilder AddUltzLogger(this ILoggingBuilder builder, Action<IUltzLoggerObject> configure)
         {
@@ -49,10 +53,10 @@ namespace Ultz.Extensions.Logging
         }
 
         /// <summary>
-        /// Adds the given <see cref="LogLevel"/>s to the logger object's <see cref="UltzLogger.LogLevels" /> list.
+        /// Adds the given <see cref="LogLevel" />s to the logger object's <see cref="UltzLogger.LogLevels" /> list.
         /// </summary>
         /// <param name="opts">The logger object to configure.</param>
-        /// <param name="logLevels">The <see cref="LogLevel"/>s to add.</param>
+        /// <param name="logLevels">The <see cref="LogLevel" />s to add.</param>
         /// <returns>The instance passed in, for method chaining.</returns>
         public static IUltzLoggerObject WithLogLevels(this IUltzLoggerObject opts, params LogLevel[] logLevels)
         {
@@ -61,10 +65,11 @@ namespace Ultz.Extensions.Logging
         }
 
         /// <summary>
-        /// Adds the given <see cref="LogLevel"/> string representations to the logger object's <see cref="UltzLogger.LogLevelStrings" />.
+        /// Adds the given <see cref="LogLevel" /> string representations to the logger object's
+        /// <see cref="UltzLogger.LogLevelStrings" />.
         /// </summary>
         /// <param name="opts">The logger object to configure.</param>
-        /// <param name="logLevelStrings">The <see cref="LogLevel"/> string representations to add.</param>
+        /// <param name="logLevelStrings">The <see cref="LogLevel" /> string representations to add.</param>
         /// <returns>The instance passed in, for method chaining.</returns>
         public static IUltzLoggerObject WithLogLevelStrings(this IUltzLoggerObject opts,
             params (LogLevel, string)[] logLevelStrings)
@@ -78,10 +83,11 @@ namespace Ultz.Extensions.Logging
         }
 
         /// <summary>
-        /// Adds the given <see cref="LogLevel"/> string representations to the logger object's <see cref="UltzLogger.LogLevelStrings" />.
+        /// Adds the given <see cref="LogLevel" /> string representations to the logger object's
+        /// <see cref="UltzLogger.LogLevelStrings" />.
         /// </summary>
         /// <param name="opts">The logger object to configure.</param>
-        /// <param name="logLevelStrings">The <see cref="LogLevel"/> string representations to add.</param>
+        /// <param name="logLevelStrings">The <see cref="LogLevel" /> string representations to add.</param>
         /// <returns>The instance passed in, for method chaining.</returns>
         public static IUltzLoggerObject WithLogLevelStrings(this IUltzLoggerObject opts,
             params KeyValuePair<LogLevel, string>[] logLevelStrings)
@@ -95,13 +101,13 @@ namespace Ultz.Extensions.Logging
         }
 
         /// <summary>
-        /// Configures the logger object to use the specified <see cref="UltzLogger.MessageFormat"/>.
+        /// Configures the logger object to use the specified <see cref="UltzLogger.MessageFormat" />.
         /// </summary>
         /// <param name="opts">The logger object to configure.</param>
         /// <param name="format">The format to use.</param>
         /// <returns>The instance passed in, for method chaining.</returns>
         /// <remarks>
-        /// Likely only used if the <see cref="UltzLogger.MessageFormat"/> is unchanged.
+        /// Likely only used if the <see cref="UltzLogger.MessageFormat" /> is unchanged.
         /// </remarks>
         public static IUltzLoggerObject WithMessageFormat(this IUltzLoggerObject opts, string format)
         {
@@ -110,7 +116,7 @@ namespace Ultz.Extensions.Logging
         }
 
         /// <summary>
-        /// Configures the logger object to use the specified <see cref="UltzLogger.MessageFormatter"/>.
+        /// Configures the logger object to use the specified <see cref="UltzLogger.MessageFormatter" />.
         /// </summary>
         /// <param name="opts">The logger object to configure.</param>
         /// <param name="formatter">The formatter to use.</param>
@@ -123,7 +129,7 @@ namespace Ultz.Extensions.Logging
         }
 
         /// <summary>
-        /// Adds the given <see cref="IOutput"/>s to the logger object's <see cref="UltzLogger.Outputs" />.
+        /// Adds the given <see cref="IOutput" />s to the logger object's <see cref="UltzLogger.Outputs" />.
         /// </summary>
         /// <param name="opts">The logger object to configure.</param>
         /// <param name="outputs">The outputs to add.</param>
@@ -135,10 +141,10 @@ namespace Ultz.Extensions.Logging
         }
 
         /// <summary>
-        /// Configures the logger object to use the specified <see cref="UltzLogger.ScopeProvider"/>.
+        /// Configures the logger object to use the specified <see cref="UltzLogger.ScopeProvider" />.
         /// </summary>
         /// <param name="opts">The logger object to configure.</param>
-        /// <param name="provider">The <see cref="IExternalScopeProvider"/> to use.</param>
+        /// <param name="provider">The <see cref="IExternalScopeProvider" /> to use.</param>
         /// <returns>The instance passed in, for method chaining.</returns>
         public static IUltzLoggerObject WithScopeProvider(this IUltzLoggerObject opts,
             IExternalScopeProvider? provider)
@@ -159,7 +165,7 @@ namespace Ultz.Extensions.Logging
         }
 
         /// <summary>
-        /// Clears all <see cref="LogLevel"/>s currently present on the given logger object.
+        /// Clears all <see cref="LogLevel" />s currently present on the given logger object.
         /// </summary>
         /// <param name="opts">The logger object to configure.</param>
         /// <returns>The instance passed in, for method chaining.</returns>
@@ -170,7 +176,7 @@ namespace Ultz.Extensions.Logging
         }
 
         /// <summary>
-        /// Clears all <see cref="UltzLogger.LogLevelStrings"/> currently present on the given logger object.
+        /// Clears all <see cref="UltzLogger.LogLevelStrings" /> currently present on the given logger object.
         /// </summary>
         /// <param name="opts">The logger object to configure.</param>
         /// <returns>The instance passed in, for method chaining.</returns>

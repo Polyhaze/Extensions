@@ -1,12 +1,3 @@
-// 
-// PemExt.cs
-// 
-// Copyright (C) 2019 Ultz Limited
-// 
-// This software may be modified and distributed under the terms
-// of the MIT license. See the LICENSE file for details.
-// 
-
 #region
 
 using System;
@@ -21,7 +12,7 @@ namespace Ultz.Extensions.PrivacyEnhancedMail
     public static class PemExt
     {
         /// <summary>
-        ///     Removes borders from a PEM certificate file, and decodes the Base64 data.
+        /// Removes borders from a PEM certificate file, and decodes the Base64 data.
         /// </summary>
         /// <param name="pemString">the PEM file</param>
         /// <param name="section">the PEM border name</param>
@@ -33,7 +24,9 @@ namespace Ultz.Extensions.PrivacyEnhancedMail
 
             var start = pemString.IndexOf(header, StringComparison.Ordinal);
             if (start < 0)
+            {
                 return null;
+            }
 
             start += header.Length;
             var end = pemString.IndexOf(footer, start, StringComparison.Ordinal) - start;
@@ -42,7 +35,7 @@ namespace Ultz.Extensions.PrivacyEnhancedMail
         }
 
         /// <summary>
-        ///     Decodes an <see cref="RSA" /> private key from its <see cref="byte" /> form.
+        /// Decodes an <see cref="RSA" /> private key from its <see cref="byte" /> form.
         /// </summary>
         /// <param name="privateKeyBytes">the raw private key</param>
         /// <returns>the decoded private key</returns>

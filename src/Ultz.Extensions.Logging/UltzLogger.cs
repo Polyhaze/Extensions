@@ -9,7 +9,7 @@ using Microsoft.Extensions.Logging;
 namespace Ultz.Extensions.Logging
 {
     /// <summary>
-    /// An implementation of <see cref="ILogger"/> but with support for extra customization. This is the heart of
+    /// An implementation of <see cref="ILogger" /> but with support for extra customization. This is the heart of
     /// the Ultz Logger.
     /// </summary>
     public sealed class UltzLogger : ILogger, IDisposable, IUltzLoggerObject
@@ -76,7 +76,7 @@ namespace Ultz.Extensions.Logging
         /// Cancels the background logging task.
         /// </summary>
         /// <remarks>
-        /// This can't be undone, and is done automatically in the <see cref="Dispose"/> method. Generally there's no
+        /// This can't be undone, and is done automatically in the <see cref="Dispose" /> method. Generally there's no
         /// reason to use this method.
         /// </remarks>
         public void Shutdown()

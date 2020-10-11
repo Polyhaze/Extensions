@@ -7,17 +7,17 @@ using Microsoft.Extensions.Logging;
 namespace Ultz.Extensions.Logging
 {
     /// <summary>
-    /// An implementation of <see cref="ILoggerProvider"/> which produces <see cref="UltzLogger"/>s.
+    /// An implementation of <see cref="ILoggerProvider" /> which produces <see cref="UltzLogger" />s.
     /// </summary>
     public class UltzLoggerProvider : ILoggerProvider, IUltzLoggerObject, ISupportExternalScope
     {
         /// <summary>
-        /// The default <see cref="MessageFormat"/> used by the default <see cref="MessageFormatter"/>.
+        /// The default <see cref="MessageFormat" /> used by the default <see cref="MessageFormatter" />.
         /// </summary>
         public const string DefaultFormat = "§8{4}{0}[{3}] §7{5}/{6}/{7} {8}:{9}:{10} [{1}] §f{2}";
 
         /// <summary>
-        /// The default <see cref="LogLevels"/> used. Encapsulates all <see cref="LogLevel"/> values.
+        /// The default <see cref="LogLevels" /> used. Encapsulates all <see cref="LogLevel" /> values.
         /// </summary>
         public static readonly LogLevel[] DefaultLogLevels = Enum.GetValues(typeof(LogLevel))
             .Cast<LogLevel>()
