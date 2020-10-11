@@ -1,0 +1,16 @@
+﻿<Project>
+    <PropertyGroup>
+        <Description>
+            A Microsoft.Extensions.Logging.Abstractions implementation, only with more customaization and less faff.
+        </Description>
+        <Version>2.0.1</Version>
+        <LangVersion>8.0</LangVersion>
+        <PackageReleaseNotes>
+            Day one patch with bug fixes and improvements.
+        </PackageReleaseNotes>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <RepositoryUrl>https://github.com/Ultz/Bcl</RepositoryUrl>
+        <RepositoryType>git</RepositoryType>
+    </PropertyGroup>
+</Project>

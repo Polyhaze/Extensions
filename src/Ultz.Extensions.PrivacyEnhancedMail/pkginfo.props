@@ -1,0 +1,12 @@
+﻿<Project>
+    <PropertyGroup>
+        <Description>The Ultz PEM Toolkit allows the deserialization of PEM certificates and RSA PEM keys.</Description>
+        <Version>1.1.4</Version>
+        <PackageReleaseNotes>
+            Adds .NET Standard 2.1 support.
+        </PackageReleaseNotes>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <RepositoryUrl>https://github.com/Ultz/Bcl</RepositoryUrl>
+        <RepositoryType>Git</RepositoryType>
+    </PropertyGroup>
+</Project>
