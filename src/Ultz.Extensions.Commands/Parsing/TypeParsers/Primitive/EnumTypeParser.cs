@@ -30,7 +30,7 @@ namespace Ultz.Extensions.Commands.Parsing.TypeParsers.Primitive
 
         public bool TryParse(Parameter parameter, string value, out object result)
         {
-            return _tryParse(value, out var numericResult)
+            return _tryParse(value.AsSpan(), out var numericResult)
                 ? _enumByValues.TryGetValue(numericResult, out result)
                 : _enumByNames.TryGetValue(value, out result);
         }

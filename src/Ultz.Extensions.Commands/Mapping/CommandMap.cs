@@ -16,7 +16,7 @@ namespace Ultz.Extensions.Commands.Mapping
         public IReadOnlyList<CommandMatch> FindCommands(string text)
         {
             List<CommandMatch> matches = null;
-            _rootNode.FindCommands(ref matches, new List<string>(), text);
+            _rootNode.FindCommands(ref matches, new List<string>(), text.ToCharArray());
             return matches ?? Array.Empty<CommandMatch>() as IReadOnlyList<CommandMatch>;
         }
 

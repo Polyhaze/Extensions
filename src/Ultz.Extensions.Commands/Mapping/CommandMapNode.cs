@@ -38,7 +38,7 @@ namespace Ultz.Extensions.Commands.Mapping
                 return;
             }
 
-            var stringSegment = new string(segment);
+            var stringSegment = segment.ToString();
             if (!encounteredSeparator && !(encounteredWhitespace && remaining.IsEmpty) &&
                 _commands.TryGetValue(stringSegment, out var commands))
             {
@@ -46,7 +46,7 @@ namespace Ultz.Extensions.Commands.Mapping
 
                 var stringRemaining = remaining.IsEmpty
                     ? string.Empty
-                    : new string(remaining);
+                    : remaining.ToString();
 
                 if (matches == null)
                 {
@@ -104,7 +104,7 @@ namespace Ultz.Extensions.Commands.Mapping
             var separator = _service.Separator;
             var separatorIndex = _isSeparatorSingleWhitespace
                 ? -1
-                : span.IndexOf(separator, _service.StringComparison);
+                : span.IndexOf(separator.AsSpan(), _service.StringComparison);
             for (var i = 0; i < span.Length; i++)
             {
                 if (segmentIndex != 0)

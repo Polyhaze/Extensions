@@ -20,7 +20,11 @@ namespace Ultz.Extensions.Commands.Builders
             Module = module;
             Callback = callback;
             Cooldowns = new List<Cooldown.Cooldown>();
+#if !NETSTANDARD2_0
             Aliases = new HashSet<string>(1);
+#else
+            Aliases = new HashSet<string>();
+#endif
             Checks = new List<CheckAttribute>();
             Attributes = new List<Attribute>();
             Parameters = new List<ParameterBuilder>();
@@ -81,7 +85,7 @@ namespace Ultz.Extensions.Commands.Builders
         /// <summary>
         /// Gets the aliases of the <see cref="Command" />.
         /// </summary>
-        public HashSet<string> Aliases { get; }
+        public ISet<string> Aliases { get; }
 
         /// <summary>
         /// Gets the checks of the <see cref="Command" />.

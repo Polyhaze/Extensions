@@ -86,7 +86,7 @@ namespace Ultz.Extensions.Commands.Parsing.ArgumentParsers.Default
 
                 if (currentParameter.IsRemainder)
                 {
-                    argumentBuilder.Append(rawArguments.Slice(currentPosition));
+                    argumentBuilder.Append(rawArguments.Slice(currentPosition).ToString());
                     break;
                 }
 

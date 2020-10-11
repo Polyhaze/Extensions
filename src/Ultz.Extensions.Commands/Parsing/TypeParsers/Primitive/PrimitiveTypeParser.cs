@@ -1,4 +1,5 @@
-﻿using Ultz.Extensions.Commands.Built;
+﻿using System;
+using Ultz.Extensions.Commands.Built;
 
 namespace Ultz.Extensions.Commands.Parsing.TypeParsers.Primitive
 {
@@ -26,7 +27,7 @@ namespace Ultz.Extensions.Commands.Parsing.TypeParsers.Primitive
 
         public bool TryParse(string value, out T result)
         {
-            return _tryParse(value, out result);
+            return _tryParse(value.AsSpan(), out result);
         }
     }
 }

@@ -430,7 +430,7 @@ namespace Ultz.Extensions.Commands
                 return false;
             }
 
-            output = new string(input.Slice(1).TrimStart());
+            output = input.Slice(1).TrimStart().ToString();
             return true;
         }
 
@@ -597,13 +597,13 @@ namespace Ultz.Extensions.Commands
                 throw new ArgumentNullException(nameof(prefix), "The prefix must not be null.");
             }
 
-            if (!input.StartsWith(prefix, comparison))
+            if (!input.StartsWith(prefix.AsSpan(), comparison))
             {
                 output = null;
                 return false;
             }
 
-            output = new string(input.Slice(prefix.Length).TrimStart());
+            output = input.Slice(prefix.Length).TrimStart().ToString();
             return true;
         }
 

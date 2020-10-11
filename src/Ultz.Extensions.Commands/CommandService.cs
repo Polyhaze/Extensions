@@ -12,6 +12,7 @@ using Ultz.Extensions.Commands.Built;
 using Ultz.Extensions.Commands.Context;
 using Ultz.Extensions.Commands.Cooldown;
 using Ultz.Extensions.Commands.Events;
+using Ultz.Extensions.Commands.Extensions;
 using Ultz.Extensions.Commands.Mapping;
 using Ultz.Extensions.Commands.Parsing.ArgumentParsers;
 using Ultz.Extensions.Commands.Parsing.TypeParsers;
@@ -80,7 +81,7 @@ namespace Ultz.Extensions.Commands
                 ? configuration.NullableNouns.ToImmutableArray()
                 : CommandUtilities.DefaultNullableNouns;
 
-            StringComparer = StringComparer.FromComparison(StringComparison);
+            StringComparer = StringComparison.ToComparer();
 
             _topLevelModules = new HashSet<Module>();
             TopLevelModules = _topLevelModules.ToArray();

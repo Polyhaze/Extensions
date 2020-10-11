@@ -73,7 +73,7 @@ namespace Ultz.Extensions.Commands.Builders
         /// <summary>
         /// Gets the aliases of the <see cref="Module" />.
         /// </summary>
-        public HashSet<string> Aliases { get; }
+        public ISet<string> Aliases { get; }
 
         /// <summary>
         /// Gets the checks of the <see cref="Module" />.
