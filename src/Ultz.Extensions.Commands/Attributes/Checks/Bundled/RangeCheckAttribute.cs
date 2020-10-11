@@ -1,46 +1,29 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Ultz.Extensions.Commands.Context;
+using Ultz.Extensions.Commands.Results.User;
 
-namespace Qmmands
+namespace Ultz.Extensions.Commands.Attributes.Checks.Bundled
 {
     /// <summary>
-    ///     Represents a parameter check that ensures the provided numeric/string argument's value/length is in the given range.
+    /// Represents a parameter check that ensures the provided numeric/string argument's value/length is in the given range.
     /// </summary>
     public sealed class RangeAttribute : ParameterCheckAttribute
     {
         /// <summary>
-        ///     Gets the minimum value of the range.
-        /// </summary>
-        public double Minimum { get; }
-
-        /// <summary>
-        ///     Gets the maximum value of the range.
-        /// </summary>
-        public double Maximum { get; }
-
-        /// <summary>
-        ///     Gets whether the minimum range value is inclusive or not.
-        /// </summary>
-        public bool IsMinimumInclusive { get; }
-
-        /// <summary>
-        ///     Gets whether the maximum range value is inclusive or not.
-        /// </summary>
-        public bool IsMaximumInclusive { get; }
-
-        /// <summary>
-        ///     Initialises a new <see cref="RangeAttribute"/> with the specified range and with the following default values:
-        ///     <para> <see cref="IsMinimumInclusive"/> set to <see langword="true"/>. </para>
-        ///     <para> <see cref="IsMaximumInclusive"/> set to <see langword="false"/>. </para>
+        /// Initialises a new <see cref="RangeAttribute" /> with the specified range and with the following default values:
+        /// <para> <see cref="IsMinimumInclusive" /> set to <see langword="true" />. </para>
+        /// <para> <see cref="IsMaximumInclusive" /> set to <see langword="false" />. </para>
         /// </summary>
         /// <param name="minimum"> The minimum value of the range. </param>
         /// <param name="maximum"> The maximum value of the range. </param>
         public RangeAttribute(double minimum, double maximum)
             : this(minimum, maximum, true, false)
-        { }
+        {
+        }
 
         /// <summary>
-        ///     Initialises a new <see cref="RangeAttribute"/> with the specified range and inclusion rules.
+        /// Initialises a new <see cref="RangeAttribute" /> with the specified range and inclusion rules.
         /// </summary>
         /// <param name="minimum"> The minimum value of the range. </param>
         /// <param name="maximum"> The maximum value of the range. </param>
@@ -50,16 +33,42 @@ namespace Qmmands
             : base(Utilities.IsNumericOrStringType)
         {
             if (maximum < minimum)
-                throw new ArgumentOutOfRangeException(nameof(maximum), maximum, "Maximum must not be smaller than minimum.");
+            {
+                throw new ArgumentOutOfRangeException(nameof(maximum), maximum,
+                    "Maximum must not be smaller than minimum.");
+            }
 
             if (maximum == minimum)
-                throw new ArgumentOutOfRangeException(nameof(maximum), maximum, "Maximum must not be equal to minimum.");
+            {
+                throw new ArgumentOutOfRangeException(nameof(maximum), maximum,
+                    "Maximum must not be equal to minimum.");
+            }
 
             Minimum = minimum;
             Maximum = maximum;
             IsMinimumInclusive = isMinimumInclusive;
             IsMaximumInclusive = isMaximumInclusive;
         }
+
+        /// <summary>
+        /// Gets the minimum value of the range.
+        /// </summary>
+        public double Minimum { get; }
+
+        /// <summary>
+        /// Gets the maximum value of the range.
+        /// </summary>
+        public double Maximum { get; }
+
+        /// <summary>
+        /// Gets whether the minimum range value is inclusive or not.
+        /// </summary>
+        public bool IsMinimumInclusive { get; }
+
+        /// <summary>
+        /// Gets whether the maximum range value is inclusive or not.
+        /// </summary>
+        public bool IsMaximumInclusive { get; }
 
         /// <inheritdoc />
         public override ValueTask<CheckResult> CheckAsync(object argument, CommandContext context)

@@ -1,27 +1,30 @@
 ﻿using System.Threading.Tasks;
+using Ultz.Extensions.Commands.Built;
 
-namespace Qmmands
+namespace Ultz.Extensions.Commands.Results.User
 {
     /// <summary>
-    ///     The abstract class to use for implementing results that can be returned from <see cref="Qmmands.Command"/>s.
+    /// The abstract class to use for implementing results that can be returned from <see cref="Built.Command" />s.
     /// </summary>
     public abstract class CommandResult : IResult
     {
         /// <summary>
-        ///     Gets whether the result was successful or not.
-        /// </summary>
-        public abstract bool IsSuccessful { get; }
-
-        /// <summary>
-        ///     The <see cref="Qmmands.Command"/> this result was returned by.
+        /// The <see cref="Built.Command" /> this result was returned by.
         /// </summary>
         public Command Command { get; internal set; }
 
         /// <summary>
-        ///     Implicitly wraps the provided <see cref="CommandResult"/> in a <see cref="ValueTask{TResult}"/>.
+        /// Gets whether the result was successful or not.
+        /// </summary>
+        public abstract bool IsSuccessful { get; }
+
+        /// <summary>
+        /// Implicitly wraps the provided <see cref="CommandResult" /> in a <see cref="ValueTask{TResult}" />.
         /// </summary>
         /// <param name="result"> The result to wrap. </param>
         public static implicit operator ValueTask<CommandResult>(CommandResult result)
-            => new ValueTask<CommandResult>(result);
+        {
+            return new ValueTask<CommandResult>(result);
+        }
     }
 }

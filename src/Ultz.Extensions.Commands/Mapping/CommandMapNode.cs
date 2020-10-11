@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using Ultz.Extensions.Commands.Built;
 
-namespace Qmmands
+namespace Ultz.Extensions.Commands.Mapping
 {
     internal sealed class CommandMapNode
     {
-        private readonly CommandService _service;
         private readonly Dictionary<string, List<Command>> _commands;
-        private readonly Dictionary<string, CommandMapNode> _nodes;
         private readonly bool _isSeparatorSingleWhitespace;
+        private readonly Dictionary<string, CommandMapNode> _nodes;
+        private readonly CommandService _service;
 
         public CommandMapNode(CommandService service)
         {
@@ -21,17 +22,25 @@ namespace Qmmands
         public void FindCommands(ref List<CommandMatch> matches, List<string> path, ReadOnlySpan<char> span)
         {
             if (path.Count == 0)
+            {
                 span = span.TrimStart();
+            }
 
             if (span.IsEmpty)
+            {
                 return;
+            }
 
-            var segment = FindNextSegment(span, out var encounteredWhitespace, out var encounteredSeparator, out var remaining);
+            var segment = FindNextSegment(span, out var encounteredWhitespace, out var encounteredSeparator,
+                out var remaining);
             if (encounteredSeparator && remaining.IsEmpty)
+            {
                 return;
+            }
 
             var stringSegment = new string(segment);
-            if (!encounteredSeparator && !(encounteredWhitespace && remaining.IsEmpty) && _commands.TryGetValue(stringSegment, out var commands))
+            if (!encounteredSeparator && !(encounteredWhitespace && remaining.IsEmpty) &&
+                _commands.TryGetValue(stringSegment, out var commands))
             {
                 path.Add(stringSegment);
 
@@ -40,10 +49,14 @@ namespace Qmmands
                     : new string(remaining);
 
                 if (matches == null)
+                {
                     matches = new List<CommandMatch>(commands.Count);
+                }
 
                 for (var i = 0; i < commands.Count; i++)
+                {
                     matches.Add(new CommandMatch(commands[i], stringSegment, path, stringRemaining));
+                }
 
                 path.RemoveAt(path.Count - 1);
             }
@@ -100,7 +113,10 @@ namespace Qmmands
                     {
                         encounteredSeparator = true;
                         if (!_isSeparatorSingleWhitespace)
+                        {
                             encounteredWhitespace = false;
+                        }
+
                         i += separator.Length - 1;
                         nextSegmentIndex += separator.Length;
                         continue;
@@ -115,7 +131,9 @@ namespace Qmmands
                 }
 
                 if (segmentIndex != nextSegmentIndex)
+                {
                     break;
+                }
 
                 segmentIndex++;
                 nextSegmentIndex++;
@@ -133,17 +151,21 @@ namespace Qmmands
                 var signature = command.SignatureIdentifier;
                 var otherSignature = otherCommand.SignatureIdentifier;
                 if (signature.Identifier != otherSignature.Identifier)
+                {
                     continue;
+                }
 
                 if (signature.HasRemainder == otherSignature.HasRemainder)
                 {
                     throw new CommandMappingException(command, segment,
-                       "Cannot map multiple overloads with the same signature.");
+                        "Cannot map multiple overloads with the same signature.");
                 }
-                else if (!signature.HasRemainder && command.IgnoresExtraArguments || !otherSignature.HasRemainder && otherCommand.IgnoresExtraArguments)
+
+                if (!signature.HasRemainder && command.IgnoresExtraArguments ||
+                    !otherSignature.HasRemainder && otherCommand.IgnoresExtraArguments)
                 {
                     throw new CommandMappingException(command, segment,
-                       "Cannot map multiple overloads with the same argument types, with one of them being a remainder, if the other one ignores extra arguments.");
+                        "Cannot map multiple overloads with the same argument types, with one of them being a remainder, if the other one ignores extra arguments.");
                 }
             }
         }
@@ -151,7 +173,10 @@ namespace Qmmands
         public void AddCommand(Command command, IReadOnlyList<string> segments, int startIndex)
         {
             if (segments.Count == 0)
-                throw new CommandMappingException(command, null, "Cannot map commands without aliases to the root node.");
+            {
+                throw new CommandMappingException(command, null,
+                    "Cannot map commands without aliases to the root node.");
+            }
 
             var segment = segments[startIndex];
             if (startIndex == segments.Count - 1)
@@ -163,7 +188,7 @@ namespace Qmmands
                 }
                 else
                 {
-                    _commands.Add(segment, new List<Command> { command });
+                    _commands.Add(segment, new List<Command> {command});
                 }
             }
             else
@@ -181,7 +206,9 @@ namespace Qmmands
         public void RemoveCommand(Command command, IReadOnlyList<string> segments, int startIndex)
         {
             if (segments.Count == 0)
+            {
                 return;
+            }
 
             var segment = segments[startIndex];
             if (startIndex == segments.Count - 1)
@@ -190,7 +217,9 @@ namespace Qmmands
                 {
                     commands.Remove(command);
                     if (commands.Count == 0)
+                    {
                         _commands.Remove(segment);
+                    }
                 }
             }
             else if (_nodes.TryGetValue(segment, out var node))
@@ -198,7 +227,9 @@ namespace Qmmands
                 node.RemoveCommand(command, segments, startIndex + 1);
 
                 if (node._commands.Count == 0)
+                {
                     _nodes.Remove(segment);
+                }
             }
         }
     }

@@ -1,12 +1,3 @@
-// 
-// CertHelpers.cs
-// 
-// Copyright (C) 2019 Ultz Limited
-// 
-// This software may be modified and distributed under the terms
-// of the MIT license. See the LICENSE file for details.
-// 
-
 #region
 
 using System;
@@ -19,7 +10,7 @@ namespace Ultz.Extensions.PrivacyEnhancedMail
     public class CertHelpers
     {
         /// <summary>
-        ///     This helper function parses an integer size from the reader using the ASN.1 format
+        /// This helper function parses an integer size from the reader using the ASN.1 format
         /// </summary>
         /// <param name="rd"></param>
         /// <returns></returns>
@@ -30,7 +21,9 @@ namespace Ultz.Extensions.PrivacyEnhancedMail
 
             byteValue = rd.ReadByte();
             if (byteValue != 0x02) // indicates an ASN.1 integer value follows
+            {
                 return 0;
+            }
 
             byteValue = rd.ReadByte();
             if (byteValue == 0x81)
@@ -49,7 +42,10 @@ namespace Ultz.Extensions.PrivacyEnhancedMail
             }
 
             //remove high order zeros in data
-            while (rd.ReadByte() == 0x00) count -= 1;
+            while (rd.ReadByte() == 0x00)
+            {
+                count -= 1;
+            }
 
             rd.BaseStream.Seek(-1, SeekOrigin.Current);
 
@@ -68,7 +64,10 @@ namespace Ultz.Extensions.PrivacyEnhancedMail
             if (alignSize != -1 && inputBytesSize < alignSize)
             {
                 var buf = new byte[alignSize];
-                for (var i = 0; i < inputBytesSize; ++i) buf[i + (alignSize - inputBytesSize)] = inputBytes[i];
+                for (var i = 0; i < inputBytesSize; ++i)
+                {
+                    buf[i + (alignSize - inputBytesSize)] = inputBytes[i];
+                }
 
                 return buf;
             }

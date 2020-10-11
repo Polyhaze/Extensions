@@ -1,73 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using Ultz.Extensions.Commands.Attributes.Checks;
+using Ultz.Extensions.Commands.Built;
+using Ultz.Extensions.Commands.Parsing.TypeParsers;
 
-namespace Qmmands
+namespace Ultz.Extensions.Commands.Builders
 {
     /// <summary>
-    ///     Allows for building <see cref="Parameter"/>s using the <see cref="CommandService"/>.
+    /// Allows for building <see cref="Parameter" />s using the <see cref="CommandService" />.
     /// </summary>
     public sealed class ParameterBuilder
     {
-        /// <summary>
-        ///     Gets or sets the name of the <see cref="Parameter"/>.
-        /// </summary>
-        public string Name { get; set; }
-
-        /// <summary>
-        ///     Gets or sets the description of the <see cref="Parameter"/>.
-        /// </summary>
-        public string Description { get; set; }
-
-        /// <summary>
-        ///     Gets or sets the remarks of the <see cref="Parameter"/>.
-        /// </summary>
-        public string Remarks { get; set; }
-
-        /// <summary>
-        ///     Gets or sets whether the <see cref="Parameter"/> is multiple or not.
-        /// </summary>
-        public bool IsMultiple { get; set; }
-
-        /// <summary>
-        ///     Gets or sets whether the <see cref="Parameter"/> is optional or not.
-        /// </summary>
-        public bool IsOptional { get; set; }
-
-        /// <summary>
-        ///     Gets or sets whether the <see cref="Parameter"/> is a remainder parameter or not.
-        /// </summary>
-        public bool IsRemainder { get; set; }
-
-        /// <summary>
-        ///     Gets or sets the default value of the <see cref="Parameter"/>.
-        /// </summary>
-        public object DefaultValue { get; set; }
-
-        /// <summary>
-        ///     Gets or sets the <see cref="System.Type"/> of a custom <see cref="TypeParser{T}"/>.
-        /// </summary>
-        public Type CustomTypeParserType { get; set; }
-
-        /// <summary>
-        ///     Gets the checks of the <see cref="Parameter"/>.
-        /// </summary>
-        public List<ParameterCheckAttribute> Checks { get; }
-
-        /// <summary>
-        ///     Gets the attributes of the <see cref="Parameter"/>.
-        /// </summary>
-        public List<Attribute> Attributes { get; }
-
-        /// <summary>
-        ///     Gets the <see cref="System.Type"/> of the <see cref="Parameter"/>.
-        /// </summary>
-        public Type Type { get; internal set; }
-
-        /// <summary>
-        ///     Gets the command of the <see cref="Parameter"/>.
-        /// </summary>
-        public CommandBuilder Command { get; }
-
         internal ParameterBuilder(Type type, CommandBuilder command)
         {
             Type = type;
@@ -77,7 +20,67 @@ namespace Qmmands
         }
 
         /// <summary>
-        ///     Sets the <see cref="Name"/>.
+        /// Gets or sets the name of the <see cref="Parameter" />.
+        /// </summary>
+        public string Name { get; set; }
+
+        /// <summary>
+        /// Gets or sets the description of the <see cref="Parameter" />.
+        /// </summary>
+        public string Description { get; set; }
+
+        /// <summary>
+        /// Gets or sets the remarks of the <see cref="Parameter" />.
+        /// </summary>
+        public string Remarks { get; set; }
+
+        /// <summary>
+        /// Gets or sets whether the <see cref="Parameter" /> is multiple or not.
+        /// </summary>
+        public bool IsMultiple { get; set; }
+
+        /// <summary>
+        /// Gets or sets whether the <see cref="Parameter" /> is optional or not.
+        /// </summary>
+        public bool IsOptional { get; set; }
+
+        /// <summary>
+        /// Gets or sets whether the <see cref="Parameter" /> is a remainder parameter or not.
+        /// </summary>
+        public bool IsRemainder { get; set; }
+
+        /// <summary>
+        /// Gets or sets the default value of the <see cref="Parameter" />.
+        /// </summary>
+        public object DefaultValue { get; set; }
+
+        /// <summary>
+        /// Gets or sets the <see cref="System.Type" /> of a custom <see cref="TypeParser{T}" />.
+        /// </summary>
+        public Type CustomTypeParserType { get; set; }
+
+        /// <summary>
+        /// Gets the checks of the <see cref="Parameter" />.
+        /// </summary>
+        public List<ParameterCheckAttribute> Checks { get; }
+
+        /// <summary>
+        /// Gets the attributes of the <see cref="Parameter" />.
+        /// </summary>
+        public List<Attribute> Attributes { get; }
+
+        /// <summary>
+        /// Gets the <see cref="System.Type" /> of the <see cref="Parameter" />.
+        /// </summary>
+        public Type Type { get; internal set; }
+
+        /// <summary>
+        /// Gets the command of the <see cref="Parameter" />.
+        /// </summary>
+        public CommandBuilder Command { get; }
+
+        /// <summary>
+        /// Sets the <see cref="Name" />.
         /// </summary>
         public ParameterBuilder WithName(string name)
         {
@@ -86,7 +89,7 @@ namespace Qmmands
         }
 
         /// <summary>
-        ///     Sets the <see cref="Description"/>.
+        /// Sets the <see cref="Description" />.
         /// </summary>
         public ParameterBuilder WithDescription(string description)
         {
@@ -95,7 +98,7 @@ namespace Qmmands
         }
 
         /// <summary>
-        ///     Sets the <see cref="Remarks"/>.
+        /// Sets the <see cref="Remarks" />.
         /// </summary>
         public ParameterBuilder WithRemarks(string remarks)
         {
@@ -104,7 +107,7 @@ namespace Qmmands
         }
 
         /// <summary>
-        ///     Sets the <see cref="IsMultiple"/>.
+        /// Sets the <see cref="IsMultiple" />.
         /// </summary>
         public ParameterBuilder WithIsMultiple(bool isMultiple)
         {
@@ -113,7 +116,7 @@ namespace Qmmands
         }
 
         /// <summary>
-        ///     Sets the <see cref="IsOptional"/>.
+        /// Sets the <see cref="IsOptional" />.
         /// </summary>
         public ParameterBuilder WithIsOptional(bool isOptional)
         {
@@ -122,7 +125,7 @@ namespace Qmmands
         }
 
         /// <summary>
-        ///     Sets the <see cref="IsRemainder"/>.
+        /// Sets the <see cref="IsRemainder" />.
         /// </summary>
         public ParameterBuilder WithIsRemainder(bool isRemainder)
         {
@@ -131,7 +134,7 @@ namespace Qmmands
         }
 
         /// <summary>
-        ///     Sets the <see cref="DefaultValue"/>.
+        /// Sets the <see cref="DefaultValue" />.
         /// </summary>
         public ParameterBuilder WithDefaultValue(object defaultValue)
         {
@@ -140,7 +143,7 @@ namespace Qmmands
         }
 
         /// <summary>
-        ///     Sets the <see cref="CustomTypeParserType"/>.
+        /// Sets the <see cref="CustomTypeParserType" />.
         /// </summary>
         public ParameterBuilder WithCustomTypeParserType(Type customTypeParserType)
         {
@@ -149,7 +152,7 @@ namespace Qmmands
         }
 
         /// <summary>
-        ///     Adds a check to <see cref="Checks"/>.
+        /// Adds a check to <see cref="Checks" />.
         /// </summary>
         public ParameterBuilder AddCheck(ParameterCheckAttribute check)
         {
@@ -158,7 +161,7 @@ namespace Qmmands
         }
 
         /// <summary>
-        ///     Adds checks to <see cref="Checks"/>.
+        /// Adds checks to <see cref="Checks" />.
         /// </summary>
         public ParameterBuilder AddChecks(params ParameterCheckAttribute[] checks)
         {
@@ -167,7 +170,7 @@ namespace Qmmands
         }
 
         /// <summary>
-        ///     Adds an attribute to <see cref="Attributes"/>.
+        /// Adds an attribute to <see cref="Attributes" />.
         /// </summary>
         public ParameterBuilder AddAttribute(Attribute attribute)
         {
@@ -176,7 +179,7 @@ namespace Qmmands
         }
 
         /// <summary>
-        ///     Adds attributes to <see cref="Attributes"/>.
+        /// Adds attributes to <see cref="Attributes" />.
         /// </summary>
         public ParameterBuilder AddAttributes(params Attribute[] attributes)
         {
@@ -187,18 +190,25 @@ namespace Qmmands
         internal Parameter Build(Command command)
         {
             if (CustomTypeParserType != null && !Utilities.IsValidTypeParserDefinition(CustomTypeParserType, Type))
-                throw new ParameterBuildingException(this, $"{CustomTypeParserType} is not a valid type parser for parameter of type {Type}.");
+            {
+                throw new ParameterBuildingException(this,
+                    $"{CustomTypeParserType} is not a valid type parser for parameter of type {Type}.");
+            }
 
             if (IsOptional)
             {
                 if (DefaultValue == null)
                 {
                     if (Type.IsValueType && !Utilities.IsNullable(Type))
-                        throw new ParameterBuildingException(this, "Value type parameter's default value must not be null.");
+                    {
+                        throw new ParameterBuildingException(this,
+                            "Value type parameter's default value must not be null.");
+                    }
                 }
                 else if (DefaultValue.GetType() != (IsMultiple ? Type.MakeArrayType() : Type))
                 {
-                    throw new ParameterBuildingException(this, $"Parameter type and default value mismatch. Expected {Type}, got {DefaultValue.GetType()}.");
+                    throw new ParameterBuildingException(this,
+                        $"Parameter type and default value mismatch. Expected {Type}, got {DefaultValue.GetType()}.");
                 }
             }
 

@@ -1,18 +1,11 @@
 ﻿using System;
 using System.Threading;
 
-namespace Qmmands
+namespace Ultz.Extensions.Commands.Cooldown
 {
     internal sealed class CooldownBucket
     {
-        public Cooldown Cooldown { get; }
-
-        public int Remaining => Volatile.Read(ref _remaining);
         private int _remaining;
-
-        public DateTimeOffset Window { get; private set; }
-
-        public DateTimeOffset LastCall { get; private set; }
 
         public CooldownBucket(Cooldown cooldown)
         {
@@ -20,13 +13,23 @@ namespace Qmmands
             _remaining = Cooldown.Amount;
         }
 
+        public Cooldown Cooldown { get; }
+
+        public int Remaining => Volatile.Read(ref _remaining);
+
+        public DateTimeOffset Window { get; private set; }
+
+        public DateTimeOffset LastCall { get; private set; }
+
         public bool IsRateLimited(out TimeSpan retryAfter)
         {
             var now = DateTimeOffset.UtcNow;
             LastCall = now;
 
             if (Remaining == Cooldown.Amount)
+            {
                 Window = now;
+            }
 
             if (now > Window + Cooldown.Per)
             {
@@ -50,7 +53,9 @@ namespace Qmmands
             Interlocked.Decrement(ref _remaining);
 
             if (Remaining == 0)
+            {
                 Window = now;
+            }
         }
 
         public void Reset()

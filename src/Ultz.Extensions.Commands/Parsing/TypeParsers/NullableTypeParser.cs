@@ -1,9 +1,11 @@
-﻿using System;
-using System.Collections.Immutable;
+﻿using System.Collections.Immutable;
 using System.Linq;
 using System.Threading.Tasks;
+using Ultz.Extensions.Commands.Built;
+using Ultz.Extensions.Commands.Context;
+using Ultz.Extensions.Commands.Results.User;
 
-namespace Qmmands
+namespace Ultz.Extensions.Commands.Parsing.TypeParsers
 {
     internal sealed class NullableTypeParser<T> : TypeParser<T>
         where T : struct
@@ -15,7 +17,8 @@ namespace Qmmands
             _typeParser = typeParser;
         }
 
-        public override ValueTask<TypeParserResult<T>> ParseAsync(Parameter parameter, string value, CommandContext context)
+        public override ValueTask<TypeParserResult<T>> ParseAsync(Parameter parameter, string value,
+            CommandContext context)
         {
             var nouns = (ImmutableArray<string>) parameter.Service.NullableNouns;
             return nouns.Any(x => value.Equals(x, parameter.Service.StringComparison))

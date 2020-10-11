@@ -1,6 +1,7 @@
 ﻿using System.Linq;
+using Ultz.Extensions.Commands.Built;
 
-namespace Qmmands
+namespace Ultz.Extensions.Commands.Parsing.TypeParsers.Primitive
 {
     // T is the underlying type of the enum, not typeof(enum)
     internal sealed class NullableEnumTypeParser<T> : IPrimitiveTypeParser

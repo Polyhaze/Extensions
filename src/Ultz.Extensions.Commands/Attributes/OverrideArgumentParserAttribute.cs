@@ -1,26 +1,32 @@
 ﻿using System;
+using Ultz.Extensions.Commands.Built;
+using Ultz.Extensions.Commands.Parsing.ArgumentParsers;
 
-namespace Qmmands
+namespace Ultz.Extensions.Commands.Attributes
 {
     /// <summary>
-    ///     Overrides the argument parser for the <see cref="Module"/> or <see cref="Command"/>.
+    /// Overrides the argument parser for the <see cref="Module" /> or <see cref="Command" />.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
     public class OverrideArgumentParserAttribute : Attribute
     {
         /// <summary>
-        ///     Gets the <see cref="Type"/> of the custom type parser.
+        /// Initialises a new <see cref="OverrideArgumentParserAttribute" /> with the specified <see cref="Type" /> of a custom
+        /// <see cref="IArgumentParser" />.
         /// </summary>
-        public Type Value { get; }
-
-        /// <summary>
-        ///     Initialises a new <see cref="OverrideArgumentParserAttribute"/> with the specified <see cref="Type"/> of a custom <see cref="IArgumentParser"/>.
-        /// </summary>
-        /// <param name="customArgumentParserType"> The <see cref="Type"/> to override with. </param>
+        /// <param name="customArgumentParserType"> The <see cref="Type" /> to override with. </param>
         /// <exception cref="ArgumentNullException">
-        ///     Custom argument parser type must not be null.
+        /// Custom argument parser type must not be null.
         /// </exception>
         public OverrideArgumentParserAttribute(Type customArgumentParserType)
-            => Value = customArgumentParserType ?? throw new ArgumentNullException(nameof(customArgumentParserType), "Custom type parser type must not be null.");
+        {
+            Value = customArgumentParserType ?? throw new ArgumentNullException(nameof(customArgumentParserType),
+                "Custom type parser type must not be null.");
+        }
+
+        /// <summary>
+        /// Gets the <see cref="Type" /> of the custom type parser.
+        /// </summary>
+        public Type Value { get; }
     }
 }

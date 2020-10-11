@@ -1,37 +1,42 @@
-﻿using System;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Ultz.Extensions.Commands.Context;
+using Ultz.Extensions.Commands.Results.User;
 
-namespace Qmmands
+namespace Ultz.Extensions.Commands.Attributes.Checks.Bundled.String
 {
     /// <summary>
-    ///     Represents a parameter check that ensures the provided string argument matches the provided <see cref="System.Text.RegularExpressions.Regex"/> pattern.
+    /// Represents a parameter check that ensures the provided string argument matches the provided
+    /// <see cref="System.Text.RegularExpressions.Regex" /> pattern.
     /// </summary>
     public sealed class RegexAttribute : ParameterCheckAttribute
     {
         /// <summary>
-        ///     Gets the required <see cref="System.Text.RegularExpressions.Regex"/>.
+        /// Initialises a new <see cref="RegexAttribute" /> with the specified <see cref="System.Text.RegularExpressions.Regex" />
+        /// pattern.
         /// </summary>
-        public Regex Regex { get; }
-
-        /// <summary>
-        ///     Initialises a new <see cref="RegexAttribute"/> with the specified <see cref="System.Text.RegularExpressions.Regex"/> pattern.
-        /// </summary>
-        /// <param name="pattern"> The <see cref="System.Text.RegularExpressions.Regex"/> pattern. </param>
+        /// <param name="pattern"> The <see cref="System.Text.RegularExpressions.Regex" /> pattern. </param>
         public RegexAttribute(string pattern)
             : this(pattern, RegexOptions.Compiled)
-        { }
+        {
+        }
 
         /// <summary>
-        ///     Initialises a new <see cref="RegexAttribute"/> with the specified <see cref="System.Text.RegularExpressions.Regex"/> pattern and <see cref="RegexOptions"/>.
+        /// Initialises a new <see cref="RegexAttribute" /> with the specified <see cref="System.Text.RegularExpressions.Regex" />
+        /// pattern and <see cref="RegexOptions" />.
         /// </summary>
-        /// <param name="pattern"> The <see cref="System.Text.RegularExpressions.Regex"/> pattern. </param>
-        /// <param name="options"> The <see cref="RegexOptions"/>. </param>
+        /// <param name="pattern"> The <see cref="System.Text.RegularExpressions.Regex" /> pattern. </param>
+        /// <param name="options"> The <see cref="RegexOptions" />. </param>
         public RegexAttribute(string pattern, RegexOptions options)
             : base(Utilities.IsStringType)
         {
             Regex = new Regex(pattern, options);
         }
+
+        /// <summary>
+        /// Gets the required <see cref="System.Text.RegularExpressions.Regex" />.
+        /// </summary>
+        public Regex Regex { get; }
 
         /// <inheritdoc />
         public override ValueTask<CheckResult> CheckAsync(object argument, CommandContext context)

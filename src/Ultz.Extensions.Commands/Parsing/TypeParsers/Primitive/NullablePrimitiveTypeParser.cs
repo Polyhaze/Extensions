@@ -1,6 +1,7 @@
 ﻿using System.Linq;
+using Ultz.Extensions.Commands.Built;
 
-namespace Qmmands
+namespace Ultz.Extensions.Commands.Parsing.TypeParsers.Primitive
 {
     internal sealed class NullablePrimitiveTypeParser<T> : IPrimitiveTypeParser
         where T : struct

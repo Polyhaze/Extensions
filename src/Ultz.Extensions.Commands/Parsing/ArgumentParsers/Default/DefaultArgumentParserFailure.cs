@@ -1,32 +1,32 @@
-﻿namespace Qmmands
+﻿namespace Ultz.Extensions.Commands.Parsing.ArgumentParsers.Default
 {
     /// <summary>
-    ///     Represents the reason why the argument parsing failed.
+    /// Represents the reason why the argument parsing failed.
     /// </summary>
     public enum DefaultArgumentParserFailure
     {
         /// <summary>
-        ///     The <see cref="DefaultArgumentParser"/> was not able to find a matching closing quote.
+        /// The <see cref="DefaultArgumentParser" /> was not able to find a matching closing quote.
         /// </summary>
         UnclosedQuote,
 
         /// <summary>
-        ///     The <see cref="DefaultArgumentParser"/> encountered an unexpected quote.
+        /// The <see cref="DefaultArgumentParser" /> encountered an unexpected quote.
         /// </summary>
         UnexpectedQuote,
 
         /// <summary>
-        ///     The <see cref="DefaultArgumentParser"/> was unable to parse some arguments as there was no whitespace between them.
+        /// The <see cref="DefaultArgumentParser" /> was unable to parse some arguments as there was no whitespace between them.
         /// </summary>
         NoWhitespaceBetweenArguments,
 
         /// <summary>
-        ///     The <see cref="DefaultArgumentParser"/> found too few arguments.
+        /// The <see cref="DefaultArgumentParser" /> found too few arguments.
         /// </summary>
         TooFewArguments,
 
         /// <summary>
-        ///     The <see cref="DefaultArgumentParser"/> found too many arguments.
+        /// The <see cref="DefaultArgumentParser" /> found too many arguments.
         /// </summary>
         TooManyArguments
     }

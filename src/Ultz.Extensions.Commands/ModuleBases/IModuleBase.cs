@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
+using Ultz.Extensions.Commands.Context;
 
-namespace Qmmands
+namespace Ultz.Extensions.Commands.ModuleBases
 {
     internal interface IModuleBase
     {

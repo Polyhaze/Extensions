@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using Ultz.Extensions.Commands.Built;
+using Ultz.Extensions.Commands.Context;
 
-namespace Qmmands
+namespace Ultz.Extensions.Commands.Cooldown
 {
     internal sealed class CooldownMap
     {
@@ -23,12 +25,16 @@ namespace Qmmands
             {
                 var bucket = buckets[i];
                 if (now > bucket.Value.LastCall + bucket.Value.Cooldown.Per)
+                {
                     _buckets.TryRemove(bucket.Key, out _);
+                }
             }
         }
 
         public void Clear()
-            => _buckets.Clear();
+        {
+            _buckets.Clear();
+        }
 
         public CooldownBucket GetBucket(Cooldown cooldown, CommandContext context)
         {

@@ -1,30 +1,11 @@
-# Qmmands
-[![Build Status](https://img.shields.io/appveyor/ci/Quahu/qmmands.svg?style=flat-square)](https://ci.appveyor.com/project/Quahu/qmmands)
-[![NuGet](https://img.shields.io/nuget/v/Qmmands.svg?style=flat-square)](https://www.nuget.org/packages/Qmmands/)
-[![MyGet](https://img.shields.io/myget/quahu/vpre/Qmmands.svg?style=flat-square&label=myget)](https://www.myget.org/feed/quahu/package/nuget/Qmmands)
-[![The Lab](https://img.shields.io/discord/416256456505950215.svg?style=flat-square&label=discord)](https://discord.gg/eUMSXGZ)  
-
-An asynchronous platform-independent .NET Core 2.1-2.2 command framework that can be used with any input source, whether that be Discord messages, IRC, or a terminal. 
+# Ultz.Extensions.Commands
+An asynchronous platform-independent .NET Standard command framework that can be used with any input source, whether that be Discord messages, IRC, or a terminal. 
 
 Inspired by [Discord.Net.Commands](https://github.com/RogueException/Discord.Net/tree/dev/src/Discord.Net.Commands) and [DSharpPlus.CommandsNext](https://github.com/DSharpPlus/DSharpPlus/tree/master/DSharpPlus.CommandsNext).
 
+Originally forked from [Qmmands](https://github.com/Quahu/Qmmands)
 
-## Installing
-Stable Qmmands builds can be pulled from NuGet.
-For nightly builds add `https://www.myget.org/F/quahu/api/v3/index.json` (the nightly feed) to your project's package sources and pull from there instead.
-
-
-## Documentation
-There's currently no official documentation for Qmmands other than the community projects below and the bundled XML docstrings. For support you should hop in my Discord guild:
-
-[![The Lab](https://discordapp.com/api/guilds/416256456505950215/embed.png?style=banner2)](https://discord.gg/eUMSXGZ)
-
-
-### Community Projects:
-* [k-boyle](https://github.com/k-boyle)'s Discord bot: [Espeon](https://github.com/k-boyle/Espeon) (Disqord)
-* [BlowaXD](https://github.com/BlowaXD)'s Nostale Server Emulator: [SaltyEmu](https://github.com/BlowaXD/SaltyEmu) 
-
-### A Simple Usage Example
+## A Simple Usage Example
 **CommandHandler.cs**
 ```cs
 private readonly CommandService _service = new CommandService();
@@ -93,4 +74,30 @@ public sealed class CommandModule : ModuleBase<CustomCommandContext>
     public Task EchoAsync([Remainder] string text)
       => Context.Channel.SendMessageAsync(text);
 }
+```
+
+## License
+```
+MIT License
+
+Copyright (c) 2018-2020 Quahu
+Copyright (c) 2020 Ultz Limited
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
 ```

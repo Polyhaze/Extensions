@@ -1,6 +1,6 @@
-﻿using Qmmands.Delegates;
+﻿using Ultz.Extensions.Commands.Built;
 
-namespace Qmmands
+namespace Ultz.Extensions.Commands.Parsing.TypeParsers.Primitive
 {
     internal class PrimitiveTypeParser<T> : IPrimitiveTypeParser
         where T : struct
@@ -12,9 +12,6 @@ namespace Qmmands
             _tryParse = (TryParseDelegate<T>) Utilities.TryParseDelegates[typeof(T)];
         }
 
-        public bool TryParse(string value, out T result)
-            => _tryParse(value, out result);
-
         bool IPrimitiveTypeParser.TryParse(Parameter parameter, string value, out object result)
         {
             if (!TryParse(value, out var genericResult))
@@ -25,6 +22,11 @@ namespace Qmmands
 
             result = genericResult;
             return true;
+        }
+
+        public bool TryParse(string value, out T result)
+        {
+            return _tryParse(value, out result);
         }
     }
 }

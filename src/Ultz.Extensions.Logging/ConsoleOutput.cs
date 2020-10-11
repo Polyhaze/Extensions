@@ -3,12 +3,12 @@
 namespace Ultz.Extensions.Logging
 {
     /// <summary>
-    /// An implementation of <see cref="IOutput"/> using <see cref="Console"/> for output.
+    /// An implementation of <see cref="IOutput" /> using <see cref="Console" /> for output.
     /// </summary>
     public class ConsoleOutput : IOutput
     {
         /// <summary>
-        /// Gets a cached instance of <see cref="ConsoleOutput"/>
+        /// Gets a cached instance of <see cref="ConsoleOutput" />
         /// </summary>
         public static ConsoleOutput Instance { get; } = new ConsoleOutput();
 

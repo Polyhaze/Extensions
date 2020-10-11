@@ -1,20 +1,17 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Ultz.Extensions.Commands.Context;
+using Ultz.Extensions.Commands.Results.User;
 
-namespace Qmmands
+namespace Ultz.Extensions.Commands.Attributes.Checks.Bundled
 {
     /// <summary>
-    ///     Represents a parameter check that ensures the provided numeric/string argument has the minimum value/length.
+    /// Represents a parameter check that ensures the provided numeric/string argument has the minimum value/length.
     /// </summary>
     public sealed class MinimumAttribute : ParameterCheckAttribute
     {
         /// <summary>
-        ///     Gets the minimum value required.
-        /// </summary>
-        public double Minimum { get; }
-
-        /// <summary>
-        ///     Initialises a new <see cref="MinimumAttribute"/> with the specified minimum value.
+        /// Initialises a new <see cref="MinimumAttribute" /> with the specified minimum value.
         /// </summary>
         /// <param name="minimum"> The minimum value. </param>
         public MinimumAttribute(double minimum)
@@ -22,6 +19,11 @@ namespace Qmmands
         {
             Minimum = minimum;
         }
+
+        /// <summary>
+        /// Gets the minimum value required.
+        /// </summary>
+        public double Minimum { get; }
 
         /// <inheritdoc />
         public override ValueTask<CheckResult> CheckAsync(object argument, CommandContext context)
@@ -32,7 +34,8 @@ namespace Qmmands
                 : Convert.ToDouble(argument);
             return value >= Minimum
                 ? CheckResult.Successful
-                : CheckResult.Unsuccessful($"The provided argument must have a minimum {(isString ? "length" : "value")} of {Minimum}.");
+                : CheckResult.Unsuccessful(
+                    $"The provided argument must have a minimum {(isString ? "length" : "value")} of {Minimum}.");
         }
     }
 }

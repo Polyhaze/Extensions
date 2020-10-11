@@ -1,20 +1,16 @@
 ﻿using System;
+using Ultz.Extensions.Commands.Built;
 
-namespace Qmmands
+namespace Ultz.Extensions.Commands.Attributes
 {
     /// <summary>
-    ///     Sets whether the <see cref="Module"/> or <see cref="Command"/> is disabled.
+    /// Sets whether the <see cref="Module" /> or <see cref="Command" /> is disabled.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
     public sealed class DisabledAttribute : Attribute
     {
         /// <summary>
-        ///     Gets whether to disable the <see cref="Module"/> or <see cref="Command"/>.
-        /// </summary>
-        public bool Value { get; }
-
-        /// <summary>
-        ///     Initialises a new <see cref="DisabledAttribute"/> with <see cref="Value"/> set to <see langword="true"/>.
+        /// Initialises a new <see cref="DisabledAttribute" /> with <see cref="Value" /> set to <see langword="true" />.
         /// </summary>
         public DisabledAttribute()
         {
@@ -22,12 +18,18 @@ namespace Qmmands
         }
 
         /// <summary>
-        ///     Initialises a new <see cref="DisabledAttribute"/> with <see cref="Value"/> set to the specified <paramref name="isDisabled"/>.
+        /// Initialises a new <see cref="DisabledAttribute" /> with <see cref="Value" /> set to the specified
+        /// <paramref name="isDisabled" />.
         /// </summary>
         /// <param name="isDisabled"> The value to set. </param>
         public DisabledAttribute(bool isDisabled)
         {
             Value = isDisabled;
         }
+
+        /// <summary>
+        /// Gets whether to disable the <see cref="Module" /> or <see cref="Command" />.
+        /// </summary>
+        public bool Value { get; }
     }
 }

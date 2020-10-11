@@ -1,29 +1,35 @@
 ﻿using System;
+using Ultz.Extensions.Commands.Built;
+using Ultz.Extensions.Commands.Parsing.TypeParsers;
 
-namespace Qmmands
+namespace Ultz.Extensions.Commands.Attributes.Parameters
 {
     /// <summary>
-    ///     Overrides the type parser for the <see cref="Parameter"/>.
+    /// Overrides the type parser for the <see cref="Parameter" />.
     /// </summary>
     /// <remarks>
-    ///    The type parser must still be added to the <see cref="CommandService"/>.
+    /// The type parser must still be added to the <see cref="CommandService" />.
     /// </remarks>
     [AttributeUsage(AttributeTargets.Parameter)]
     public class OverrideTypeParserAttribute : Attribute
     {
         /// <summary>
-        ///     Gets the <see cref="Type"/> of the custom type parser.
+        /// Initialises a new <see cref="OverrideTypeParserAttribute" /> with the specified <see cref="Type" /> of a custom
+        /// <see cref="TypeParser{T}" />.
         /// </summary>
-        public Type Value { get; }
-
-        /// <summary>
-        ///     Initialises a new <see cref="OverrideTypeParserAttribute"/> with the specified <see cref="Type"/> of a custom <see cref="TypeParser{T}"/>.
-        /// </summary>
-        /// <param name="customTypeParserType"> The <see cref="Type"/> to override with. </param>
+        /// <param name="customTypeParserType"> The <see cref="Type" /> to override with. </param>
         /// <exception cref="ArgumentNullException">
-        ///     Custom type parser type must not be null.
+        /// Custom type parser type must not be null.
         /// </exception>
         public OverrideTypeParserAttribute(Type customTypeParserType)
-            => Value = customTypeParserType ?? throw new ArgumentNullException(nameof(customTypeParserType), "Custom type parser type must not be null.");
+        {
+            Value = customTypeParserType ?? throw new ArgumentNullException(nameof(customTypeParserType),
+                "Custom type parser type must not be null.");
+        }
+
+        /// <summary>
+        /// Gets the <see cref="Type" /> of the custom type parser.
+        /// </summary>
+        public Type Value { get; }
     }
 }

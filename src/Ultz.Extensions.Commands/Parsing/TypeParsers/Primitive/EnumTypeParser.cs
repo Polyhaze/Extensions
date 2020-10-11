@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using Qmmands.Delegates;
+using Ultz.Extensions.Commands.Built;
 
-namespace Qmmands
+namespace Ultz.Extensions.Commands.Parsing.TypeParsers.Primitive
 {
     // T is the underlying type of the enum, not typeof(enum)
     internal sealed class EnumTypeParser<T> : IPrimitiveTypeParser
         where T : struct
     {
-        private readonly TryParseDelegate<T> _tryParse;
         private readonly Dictionary<string, object> _enumByNames;
         private readonly Dictionary<T, object> _enumByValues;
+        private readonly TryParseDelegate<T> _tryParse;
 
         public EnumTypeParser(Type enumType, CommandService service)
         {
@@ -29,6 +29,10 @@ namespace Qmmands
         }
 
         public bool TryParse(Parameter parameter, string value, out object result)
-            => _tryParse(value, out var numericResult) ? _enumByValues.TryGetValue(numericResult, out result) : _enumByNames.TryGetValue(value, out result);
+        {
+            return _tryParse(value, out var numericResult)
+                ? _enumByValues.TryGetValue(numericResult, out result)
+                : _enumByNames.TryGetValue(value, out result);
+        }
     }
 }

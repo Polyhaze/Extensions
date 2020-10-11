@@ -2,28 +2,32 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using Ultz.Extensions.Commands.Built;
+using Ultz.Extensions.Commands.Context;
+using Ultz.Extensions.Commands.Results.User;
 
-namespace Qmmands
+namespace Ultz.Extensions.Commands.Parsing.ArgumentParsers.Default
 {
     /// <summary>
-    ///     Represents the default argument parser used by the <see cref="CommandService"/>.
+    /// Represents the default argument parser used by the <see cref="CommandService" />.
     /// </summary>
     public sealed class DefaultArgumentParser : IArgumentParser
     {
         /// <summary>
-        ///     Gets the singleton instance of the <see cref="DefaultArgumentParser"/>.
+        /// Gets the singleton instance of the <see cref="DefaultArgumentParser" />.
         /// </summary>
         public static readonly DefaultArgumentParser Instance = new DefaultArgumentParser();
 
         private DefaultArgumentParser()
-        { }
+        {
+        }
 
         /// <summary>
-        ///     Attempts to parse raw arguments for the given <see cref="CommandContext"/>.
+        /// Attempts to parse raw arguments for the given <see cref="CommandContext" />.
         /// </summary>
-        /// <param name="context"> The <see cref="CommandContext"/> to parse raw arguments for. </param>
+        /// <param name="context"> The <see cref="CommandContext" /> to parse raw arguments for. </param>
         /// <returns>
-        ///     A <see cref="DefaultArgumentParserResult"/>.
+        /// A <see cref="DefaultArgumentParserResult" />.
         /// </returns>
         public ValueTask<ArgumentParserResult> ParseAsync(CommandContext context)
         {
@@ -49,7 +53,8 @@ namespace Qmmands
                         whitespaceSeparated = true;
                         continue;
                     }
-                    else if (currentPosition != 0 && !whitespaceSeparated)
+
+                    if (currentPosition != 0 && !whitespaceSeparated)
                     {
                         return new DefaultArgumentParserResult(command, null, arguments,
                             command.Service.QuotationMarkMap.TryGetValue(character, out expectedQuote)
@@ -57,23 +62,25 @@ namespace Qmmands
                                 ? DefaultArgumentParserFailure.UnexpectedQuote
                                 : DefaultArgumentParserFailure.NoWhitespaceBetweenArguments, currentPosition);
                     }
-                    else
+
+                    currentParameter = (arguments == null || arguments.Count < command.Parameters.Count)
+                                       && command.Parameters.Count > 0
+                        ? command.Parameters[arguments?.Count ?? 0]
+                        : multipleParameter;
+                    if (currentParameter == null)
                     {
-                        currentParameter = (arguments == null || arguments.Count < command.Parameters.Count)
-                            && command.Parameters.Count > 0
-                                ? command.Parameters[arguments?.Count ?? 0]
-                                : multipleParameter;
-                        if (currentParameter == null)
+                        if (command.IgnoresExtraArguments)
                         {
-                            if (command.IgnoresExtraArguments)
-                                break;
-                            else
-                                return new DefaultArgumentParserResult(command, null, arguments, DefaultArgumentParserFailure.TooManyArguments, currentPosition);
+                            break;
                         }
-                        else if (currentParameter.IsMultiple)
-                        {
-                            multipleParameter = currentParameter;
-                        }
+
+                        return new DefaultArgumentParserResult(command, null, arguments,
+                            DefaultArgumentParserFailure.TooManyArguments, currentPosition);
+                    }
+
+                    if (currentParameter.IsMultiple)
+                    {
+                        multipleParameter = currentParameter;
                     }
                 }
 
@@ -100,7 +107,8 @@ namespace Qmmands
                         continue;
                     }
 
-                    if (character == '\\' && currentPosition + 1 < rawArguments.Length && command.Service.QuotationMarkMap.ContainsKey(rawArguments[currentPosition + 1]))
+                    if (character == '\\' && currentPosition + 1 < rawArguments.Length &&
+                        command.Service.QuotationMarkMap.ContainsKey(rawArguments[currentPosition + 1]))
                     {
                         isEscaping = true;
                         continue;
@@ -111,9 +119,9 @@ namespace Qmmands
                         if (currentPosition != 0 && !whitespaceSeparated)
                         {
                             return new DefaultArgumentParserResult(command, currentParameter, arguments,
-                               rawArguments.Slice(currentPosition + 1).IndexOf(expectedQuote) == -1
-                                   ? DefaultArgumentParserFailure.UnexpectedQuote
-                                   : DefaultArgumentParserFailure.NoWhitespaceBetweenArguments, currentPosition);
+                                rawArguments.Slice(currentPosition + 1).IndexOf(expectedQuote) == -1
+                                    ? DefaultArgumentParserFailure.UnexpectedQuote
+                                    : DefaultArgumentParserFailure.NoWhitespaceBetweenArguments, currentPosition);
                         }
 
                         currentQuote = character;
@@ -123,7 +131,8 @@ namespace Qmmands
                 }
                 else
                 {
-                    if (character == '\\' && currentPosition + 1 < rawArguments.Length && rawArguments[currentPosition + 1] == expectedQuote)
+                    if (character == '\\' && currentPosition + 1 < rawArguments.Length &&
+                        rawArguments[currentPosition + 1] == expectedQuote)
                     {
                         isEscaping = true;
                         continue;
@@ -143,13 +152,20 @@ namespace Qmmands
             }
 
             if (currentQuote != '\0')
-                return new DefaultArgumentParserResult(command, currentParameter, arguments, DefaultArgumentParserFailure.UnclosedQuote, rawArguments.LastIndexOf(currentQuote));
+            {
+                return new DefaultArgumentParserResult(command, currentParameter, arguments,
+                    DefaultArgumentParserFailure.UnclosedQuote, rawArguments.LastIndexOf(currentQuote));
+            }
 
             if (currentParameter != null)
+            {
                 NextParameter(command, ref currentParameter, argumentBuilder, ref arguments);
+            }
 
             if (arguments == null && command.Parameters.Count > 0)
+            {
                 arguments = new Dictionary<Parameter, object>(command.Parameters.Count);
+            }
 
             if (arguments != null && arguments.Count != command.Parameters.Count)
             {
@@ -157,18 +173,24 @@ namespace Qmmands
                 {
                     var parameter = command.Parameters[i];
                     if (!parameter.IsOptional)
-                        return new DefaultArgumentParserResult(command, parameter, arguments, DefaultArgumentParserFailure.TooFewArguments, null);
+                    {
+                        return new DefaultArgumentParserResult(command, parameter, arguments,
+                            DefaultArgumentParserFailure.TooFewArguments, null);
+                    }
                 }
             }
 
             return new DefaultArgumentParserResult(command, arguments);
         }
 
-        private static void NextParameter(Command command, ref Parameter currentParameter, StringBuilder argumentBuilder,
+        private static void NextParameter(Command command, ref Parameter currentParameter,
+            StringBuilder argumentBuilder,
             ref Dictionary<Parameter, object> arguments)
         {
             if (arguments == null)
+            {
                 arguments = new Dictionary<Parameter, object>(command.Parameters.Count);
+            }
 
             if (!currentParameter.IsMultiple)
             {
@@ -177,9 +199,13 @@ namespace Qmmands
             else
             {
                 if (arguments.TryGetValue(currentParameter, out var list))
+                {
                     (list as List<object>).Add(argumentBuilder.ToString());
+                }
                 else
-                    arguments.Add(currentParameter, new List<object> { argumentBuilder.ToString() });
+                {
+                    arguments.Add(currentParameter, new List<object> {argumentBuilder.ToString()});
+                }
             }
 
             argumentBuilder.Clear();
