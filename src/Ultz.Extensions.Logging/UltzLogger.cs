@@ -14,8 +14,9 @@ namespace Ultz.Extensions.Logging
     /// </summary>
     public sealed class UltzLogger : ILogger, IDisposable, IUltzLoggerObject
     {
-        private readonly CancellationTokenSource _cancellationToken = new CancellationTokenSource();
-        private readonly BlockingCollection<string> _logMessages = new BlockingCollection<string>();
+        private readonly CancellationTokenSource _cancellationToken = new();
+        private readonly BlockingCollection<string> _logMessages = new();
+        private readonly ManualResetEventSlim _noMessagesResetEvent = new();
         private readonly Task _logTask;
         private readonly string _name;
 
@@ -72,22 +73,27 @@ namespace Ultz.Extensions.Logging
         /// <inheritdoc />
         public IExternalScopeProvider? ScopeProvider { get; set; }
 
-        /// <summary>
-        /// Cancels the background logging task.
-        /// </summary>
-        /// <remarks>
-        /// This can't be undone, and is done automatically in the <see cref="Dispose" /> method. Generally there's no
-        /// reason to use this method.
-        /// </remarks>
-        public void Shutdown()
+        /// <inheritdoc cref="IUltzLoggerObject" />
+        public void WaitForIdle()
         {
-            _cancellationToken.Cancel();
+            _noMessagesResetEvent.Wait();
+        }
+
+        /// <inheritdoc cref="IUltzLoggerObject" />
+        public void Shutdown() => _cancellationToken.Cancel();
+
+        /// <inheritdoc cref="IUltzLoggerObject" />
+        public void WaitAndShutdown()
+        {
+            WaitForIdle();
+            Shutdown();
         }
 
         private void CoreLog()
         {
             foreach (var message in _logMessages.GetConsumingEnumerable(_cancellationToken.Token))
             {
+                _noMessagesResetEvent.Reset();
                 foreach (var writer in Outputs)
                 {
                     lock (writer)
@@ -100,16 +106,18 @@ namespace Ultz.Extensions.Logging
                         writer.Write(Environment.NewLine, null);
                     }
                 }
+
+                if (_logMessages.Count == 0)
+                {
+                    _noMessagesResetEvent.Set();
+                }
             }
         }
 
         private string CoreMessageFormatter(LogLevel arg1, EventId arg2, string arg3)
         {
             return string.Join("\n", arg3.Split('\n').Select(x => string.Format(MessageFormat, _name,
-                LogLevelStrings[arg1], x, arg2.ToString(),
-                GetSyslogSeverityString(arg1), DateTime.Now.ToString("dd"), DateTime.Now.ToString("MM"),
-                DateTime.Now.ToString("yyyy"), DateTime.Now.ToString("hh"), DateTime.Now.ToString("mm"),
-                DateTime.Now.ToString("ss"))));
+                LogLevelStrings[arg1], x, arg2, GetSyslogSeverityString(arg1), DateTime.Now)));
         }
 
         private static string GetSyslogSeverityString(LogLevel logLevel)

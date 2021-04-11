@@ -42,5 +42,24 @@ namespace Ultz.Extensions.Logging
         /// Gets or sets an external scope provider.
         /// </summary>
         IExternalScopeProvider? ScopeProvider { get; set; }
+
+        /// <summary>
+        /// Waits until there is a window in which there are no messages being output to console.
+        /// </summary>
+        void WaitForIdle();
+
+        /// <summary>
+        /// Cancels the background logging task.
+        /// </summary>
+        /// <remarks>
+        /// This can't be undone, and is done automatically in the <see cref="Dispose" /> method. Generally there's no
+        /// reason to use this method.
+        /// </remarks>
+        void Shutdown();
+
+        /// <summary>
+        /// Equivalent to <see cref="WaitForIdle"/> and <see cref="Shutdown"/>.
+        /// </summary>
+        void WaitAndShutdown();
     }
 }

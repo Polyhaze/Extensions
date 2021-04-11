@@ -2,6 +2,7 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 
 namespace Ultz.Extensions.Logging
@@ -14,7 +15,7 @@ namespace Ultz.Extensions.Logging
         /// <summary>
         /// The default <see cref="MessageFormat" /> used by the default <see cref="MessageFormatter" />.
         /// </summary>
-        public const string DefaultFormat = "§8{4}{0}[{3}] §7{5}/{6}/{7} {8}:{9}:{10} [{1}] §f{2}";
+        public const string DefaultFormat = "§8{4}{0}[{3}] §7{5:dd}/{5:MM}/{5:yyyy} {5:HH}:{5:mm}:{5:ss} [{1}] §f{2}";
 
         /// <summary>
         /// The default <see cref="LogLevels" /> used. Encapsulates all <see cref="LogLevel" /> values.
@@ -72,6 +73,16 @@ namespace Ultz.Extensions.Logging
 
         /// <inheritdoc />
         public IExternalScopeProvider? ScopeProvider { get; set; } = NopScopeProvider.Instance;
+
+        /// <inheritdoc cref="IUltzLoggerObject" />
+        public void WaitForIdle() => Task.WaitAll(_loggers.Values.Select(x => Task.Run(x.WaitForIdle)).ToArray());
+
+        /// <inheritdoc cref="IUltzLoggerObject" />
+        public void Shutdown() => Task.WaitAll(_loggers.Values.Select(x => Task.Run(x.Shutdown)).ToArray());
+
+        /// <inheritdoc cref="IUltzLoggerObject" />
+        public void WaitAndShutdown()
+            => Task.WaitAll(_loggers.Values.Select(x => Task.Run(x.WaitAndShutdown)).ToArray());
 
         /// <inheritdoc />
         public string MessageFormat { get; set; } = DefaultFormat;

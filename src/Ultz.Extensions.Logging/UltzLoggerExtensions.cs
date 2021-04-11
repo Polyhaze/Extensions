@@ -21,6 +21,7 @@ namespace Ultz.Extensions.Logging
         {
             builder.AddConfiguration();
             builder.Services.TryAddEnumerable(ServiceDescriptor.Singleton<ILoggerProvider, UltzLoggerProvider>());
+            
             return builder;
         }
 
