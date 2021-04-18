@@ -35,7 +35,7 @@ namespace Ultz.Extensions.Logging
         /// custom configuration should be added.
         /// </param>
         /// <returns>The instance passed in, for method chaining.</returns>
-        public static ILoggingBuilder AddUltzLogger(this ILoggingBuilder builder, Action<IUltzLoggerObject> configure)
+        public static ILoggingBuilder AddUltzLogger(this ILoggingBuilder builder, Action<UltzLoggerProvider> configure)
         {
             if (configure is null)
             {
@@ -54,12 +54,12 @@ namespace Ultz.Extensions.Logging
         }
 
         /// <summary>
-        /// Adds the given <see cref="LogLevel" />s to the logger object's <see cref="UltzLogger.LogLevels" /> list.
+        /// Adds the given <see cref="LogLevel" />s to the logger object's <see cref="UltzLoggerProvider.LogLevels" /> list.
         /// </summary>
         /// <param name="opts">The logger object to configure.</param>
         /// <param name="logLevels">The <see cref="LogLevel" />s to add.</param>
         /// <returns>The instance passed in, for method chaining.</returns>
-        public static IUltzLoggerObject WithLogLevels(this IUltzLoggerObject opts, params LogLevel[] logLevels)
+        public static UltzLoggerProvider WithLogLevels(this UltzLoggerProvider opts, params LogLevel[] logLevels)
         {
             opts.LogLevels.AddRange(logLevels);
             return opts;
@@ -67,12 +67,12 @@ namespace Ultz.Extensions.Logging
 
         /// <summary>
         /// Adds the given <see cref="LogLevel" /> string representations to the logger object's
-        /// <see cref="UltzLogger.LogLevelStrings" />.
+        /// <see cref="UltzLoggerProvider.LogLevelStrings" />.
         /// </summary>
         /// <param name="opts">The logger object to configure.</param>
         /// <param name="logLevelStrings">The <see cref="LogLevel" /> string representations to add.</param>
         /// <returns>The instance passed in, for method chaining.</returns>
-        public static IUltzLoggerObject WithLogLevelStrings(this IUltzLoggerObject opts,
+        public static UltzLoggerProvider WithLogLevelStrings(this UltzLoggerProvider opts,
             params (LogLevel, string)[] logLevelStrings)
         {
             foreach (var (logLevel, @string) in logLevelStrings)
@@ -85,12 +85,12 @@ namespace Ultz.Extensions.Logging
 
         /// <summary>
         /// Adds the given <see cref="LogLevel" /> string representations to the logger object's
-        /// <see cref="UltzLogger.LogLevelStrings" />.
+        /// <see cref="UltzLoggerProvider.LogLevelStrings" />.
         /// </summary>
         /// <param name="opts">The logger object to configure.</param>
         /// <param name="logLevelStrings">The <see cref="LogLevel" /> string representations to add.</param>
         /// <returns>The instance passed in, for method chaining.</returns>
-        public static IUltzLoggerObject WithLogLevelStrings(this IUltzLoggerObject opts,
+        public static UltzLoggerProvider WithLogLevelStrings(this UltzLoggerProvider opts,
             params KeyValuePair<LogLevel, string>[] logLevelStrings)
         {
             foreach (var logLevelString in logLevelStrings)
@@ -102,52 +102,52 @@ namespace Ultz.Extensions.Logging
         }
 
         /// <summary>
-        /// Configures the logger object to use the specified <see cref="UltzLogger.MessageFormat" />.
+        /// Configures the logger object to use the specified <see cref="UltzLoggerProvider.MessageFormat" />.
         /// </summary>
         /// <param name="opts">The logger object to configure.</param>
         /// <param name="format">The format to use.</param>
         /// <returns>The instance passed in, for method chaining.</returns>
         /// <remarks>
-        /// Likely only used if the <see cref="UltzLogger.MessageFormat" /> is unchanged.
+        /// Likely only used if the <see cref="UltzLoggerProvider.MessageFormat" /> is unchanged.
         /// </remarks>
-        public static IUltzLoggerObject WithMessageFormat(this IUltzLoggerObject opts, string format)
+        public static UltzLoggerProvider WithMessageFormat(this UltzLoggerProvider opts, string format)
         {
             opts.MessageFormat = format;
             return opts;
         }
 
         /// <summary>
-        /// Configures the logger object to use the specified <see cref="UltzLogger.MessageFormatter" />.
+        /// Configures the logger object to use the specified <see cref="UltzLoggerProvider.MessageFormatter" />.
         /// </summary>
         /// <param name="opts">The logger object to configure.</param>
         /// <param name="formatter">The formatter to use.</param>
         /// <returns>The instance passed in, for method chaining.</returns>
-        public static IUltzLoggerObject WithMessageFormatter(this IUltzLoggerObject opts,
-            Func<LogLevel, EventId, string, string>? formatter)
+        public static UltzLoggerProvider WithMessageFormatter(this UltzLoggerProvider opts,
+            IMessageFormatter? formatter)
         {
             opts.MessageFormatter = formatter;
             return opts;
         }
 
         /// <summary>
-        /// Adds the given <see cref="IOutput" />s to the logger object's <see cref="UltzLogger.Outputs" />.
+        /// Adds the given <see cref="IOutput" />s to the logger object's <see cref="UltzLoggerProvider.Outputs" />.
         /// </summary>
         /// <param name="opts">The logger object to configure.</param>
         /// <param name="outputs">The outputs to add.</param>
         /// <returns>The instance passed in, for method chaining.</returns>
-        public static IUltzLoggerObject WithOutputs(this IUltzLoggerObject opts, params IOutput[] outputs)
+        public static UltzLoggerProvider WithOutputs(this UltzLoggerProvider opts, params IOutput[] outputs)
         {
             opts.Outputs.AddRange(outputs);
             return opts;
         }
 
         /// <summary>
-        /// Configures the logger object to use the specified <see cref="UltzLogger.ScopeProvider" />.
+        /// Configures the logger object to use the specified <see cref="UltzLoggerProvider.ScopeProvider" />.
         /// </summary>
         /// <param name="opts">The logger object to configure.</param>
         /// <param name="provider">The <see cref="IExternalScopeProvider" /> to use.</param>
         /// <returns>The instance passed in, for method chaining.</returns>
-        public static IUltzLoggerObject WithScopeProvider(this IUltzLoggerObject opts,
+        public static UltzLoggerProvider WithScopeProvider(this UltzLoggerProvider opts,
             IExternalScopeProvider? provider)
         {
             opts.ScopeProvider = provider;
@@ -159,7 +159,7 @@ namespace Ultz.Extensions.Logging
         /// </summary>
         /// <param name="opts">The logger object to configure.</param>
         /// <returns>The instance passed in, for method chaining.</returns>
-        public static IUltzLoggerObject ClearOutputs(this IUltzLoggerObject opts)
+        public static UltzLoggerProvider ClearOutputs(this UltzLoggerProvider opts)
         {
             opts.Outputs.Clear();
             return opts;
@@ -170,18 +170,18 @@ namespace Ultz.Extensions.Logging
         /// </summary>
         /// <param name="opts">The logger object to configure.</param>
         /// <returns>The instance passed in, for method chaining.</returns>
-        public static IUltzLoggerObject ClearLogLevels(this IUltzLoggerObject opts)
+        public static UltzLoggerProvider ClearLogLevels(this UltzLoggerProvider opts)
         {
             opts.LogLevels.Clear();
             return opts;
         }
 
         /// <summary>
-        /// Clears all <see cref="UltzLogger.LogLevelStrings" /> currently present on the given logger object.
+        /// Clears all <see cref="UltzLoggerProvider.LogLevelStrings" /> currently present on the given logger object.
         /// </summary>
         /// <param name="opts">The logger object to configure.</param>
         /// <returns>The instance passed in, for method chaining.</returns>
-        public static IUltzLoggerObject ClearLogLevelStrings(this IUltzLoggerObject opts)
+        public static UltzLoggerProvider ClearLogLevelStrings(this UltzLoggerProvider opts)
         {
             opts.LogLevelStrings.Clear();
             return opts;

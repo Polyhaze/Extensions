@@ -10,7 +10,7 @@ namespace Ultz.Extensions.Logging
         /// <summary>
         /// Gets a cached instance of <see cref="ConsoleOutput" />
         /// </summary>
-        public static ConsoleOutput Instance { get; } = new ConsoleOutput();
+        public static ConsoleOutput Instance { get; } = new();
 
         /// <inheritdoc />
         public void Write(string msg, ConsoleColor? color)

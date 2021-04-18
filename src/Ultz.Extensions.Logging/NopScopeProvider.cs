@@ -34,7 +34,7 @@ namespace Ultz.Extensions.Logging
             {
             }
 
-            public static NopScope Instance { get; } = new NopScope();
+            public static NopScope Instance { get; } = new();
 
             /// <inheritdoc />
             public void Dispose()

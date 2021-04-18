@@ -2,6 +2,7 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 
@@ -10,7 +11,7 @@ namespace Ultz.Extensions.Logging
     /// <summary>
     /// An implementation of <see cref="ILoggerProvider" /> which produces <see cref="UltzLogger" />s.
     /// </summary>
-    public class UltzLoggerProvider : ILoggerProvider, IUltzLoggerObject, ISupportExternalScope
+    public class UltzLoggerProvider : ILoggerProvider, ISupportExternalScope
     {
         /// <summary>
         /// The default <see cref="MessageFormat" /> used by the default <see cref="MessageFormatter" />.
@@ -24,30 +25,30 @@ namespace Ultz.Extensions.Logging
             .Cast<LogLevel>()
             .ToArray();
 
-        private readonly ConcurrentDictionary<string, UltzLogger> _loggers =
-            new ConcurrentDictionary<string, UltzLogger>();
+        private readonly ConcurrentDictionary<string, UltzLogger> _loggers = new();
+        private readonly CancellationTokenSource _cancellationToken = new();
+        private readonly BlockingCollection<string> _logMessages = new();
+        private readonly ManualResetEventSlim _noMessagesResetEvent = new();
+        private readonly Task _logTask;
+
+        public UltzLoggerProvider()
+        {
+            _logTask = Task.Run(CoreLog, _cancellationToken.Token);
+            MessageFormatter = Logging.MessageFormatter.Default;
+        }
 
         /// <inheritdoc />
         public ILogger CreateLogger(string categoryName)
         {
-            return _loggers.GetOrAdd(categoryName, new UltzLogger(categoryName)
-            {
-                LogLevels = LogLevels,
-                Outputs = Outputs,
-                MessageFormat = MessageFormat,
-                MessageFormatter = MessageFormatter,
-                ScopeProvider = ScopeProvider,
-                LogLevelStrings = LogLevelStrings
-            });
+            return _loggers.GetOrAdd(categoryName, new UltzLogger(categoryName, this));
         }
 
         /// <inheritdoc />
         public void Dispose()
         {
-            foreach (var logger in _loggers.Values)
-            {
-                logger.Dispose();
-            }
+            _logMessages.Dispose();
+            Shutdown();
+            _cancellationToken.Dispose();
         }
 
         /// <inheritdoc />
@@ -56,11 +57,15 @@ namespace Ultz.Extensions.Logging
             ScopeProvider = scopeProvider;
         }
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Gets a list of log levels for which this logger is applicable.
+        /// </summary>
         public List<LogLevel> LogLevels { get; } = DefaultLogLevels.ToList();
 
-        /// <inheritdoc />
-        public Dictionary<LogLevel, string> LogLevelStrings { get; } = new Dictionary<LogLevel, string>
+        /// <summary>
+        /// Gets a dictionary outlining the string representations of each log level.
+        /// </summary>
+        public Dictionary<LogLevel, string> LogLevelStrings { get; } = new()
         {
             {LogLevel.None, Output.ColourCharacter + "rNONE" + Output.ColourCharacter + "7"},
             {LogLevel.Critical, Output.ColourCharacter + "cSEVERE" + Output.ColourCharacter + "7"},
@@ -71,26 +76,112 @@ namespace Ultz.Extensions.Logging
             {LogLevel.Trace, Output.ColourCharacter + "dTRACE" + Output.ColourCharacter + "7"}
         };
 
-        /// <inheritdoc />
-        public IExternalScopeProvider? ScopeProvider { get; set; } = NopScopeProvider.Instance;
+        /// <summary>
+        /// Gets or sets the external scope provider.
+        /// </summary>
+        public IExternalScopeProvider? ScopeProvider { get; set; }
 
-        /// <inheritdoc cref="IUltzLoggerObject" />
-        public void WaitForIdle() => Task.WaitAll(_loggers.Values.Select(x => Task.Run(x.WaitForIdle)).ToArray());
+        /// <summary>
+        /// Waits until there is a window in which there are no messages being output to console.
+        /// </summary>
+        public void WaitForIdle()
+        {
+            _noMessagesResetEvent.Wait();
+        }
 
-        /// <inheritdoc cref="IUltzLoggerObject" />
-        public void Shutdown() => Task.WaitAll(_loggers.Values.Select(x => Task.Run(x.Shutdown)).ToArray());
+        /// <summary>
+        /// Cancels the background logging task.
+        /// </summary>
+        /// <remarks>
+        /// This can't be undone, and is done automatically in the <see cref="Dispose" /> method. Generally there's no
+        /// reason to use this method.
+        /// </remarks>
+        public void Shutdown() => _cancellationToken.Cancel();
 
-        /// <inheritdoc cref="IUltzLoggerObject" />
+        /// <summary>
+        /// Equivalent to <see cref="WaitForIdle"/> and <see cref="Shutdown"/>.
+        /// </summary>
         public void WaitAndShutdown()
-            => Task.WaitAll(_loggers.Values.Select(x => Task.Run(x.WaitAndShutdown)).ToArray());
+        {
+            WaitForIdle();
+            Shutdown();
+        }
 
-        /// <inheritdoc />
+        private void CoreLog()
+        {
+            foreach (var message in _logMessages.GetConsumingEnumerable(_cancellationToken.Token))
+            {
+                _noMessagesResetEvent.Reset();
+                foreach (var writer in Outputs)
+                {
+                    lock (writer)
+                    {
+                        foreach (var (subMsg, colour) in Output.EnumerateSubMessages(message))
+                        {
+                            writer.Write(subMsg, colour);
+                        }
+
+                        writer.Write(Environment.NewLine, null);
+                    }
+                }
+
+                if (_logMessages.Count == 0)
+                {
+                    _noMessagesResetEvent.Set();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets the syslog message severity for the given loglevel, as defined in https://tools.ietf.org/html/rfc5424.
+        /// </summary>
+        /// <param name="logLevel">The log level to get a syslog severity for.</param>
+        /// <returns>The syslog severity of the given loglevel.</returns>
+        public static string GetSyslogSeverityString(LogLevel logLevel)
+        {
+            // 'Syslog Message Severities' from https://tools.ietf.org/html/rfc5424.
+            switch (logLevel)
+            {
+                case LogLevel.Trace:
+                case LogLevel.Debug:
+                    return "<7>"; // debug-level messages
+                case LogLevel.Information:
+                    return "<6>"; // informational messages
+                case LogLevel.Warning:
+                    return "<4>"; // warning conditions
+                case LogLevel.Error:
+                    return "<3>"; // error conditions
+                case LogLevel.Critical:
+                    return "<2>"; // critical conditions
+                case LogLevel.None:
+                default:
+                    return string.Empty;
+            }
+        }
+
+
+        /// <summary>
+        /// Gets or sets the message format of this logger.
+        /// </summary>
+        /// <remarks>
+        /// This property is used by the default <see cref="MessageFormatter" />. If <see cref="MessageFormatter" /> is
+        /// set to a formatter that doesn't use this property, this value will be entirely ignored.
+        /// </remarks>
         public string MessageFormat { get; set; } = DefaultFormat;
 
-        /// <inheritdoc />
-        public Func<LogLevel, EventId, string, string>? MessageFormatter { get; set; }
+        /// <summary>
+        /// Gets or sets the message formatter, used to construct the final form of log messages.
+        /// </summary>
+        public IMessageFormatter? MessageFormatter { get; set; }
 
-        /// <inheritdoc />
-        public List<IOutput> Outputs { get; } = new List<IOutput> {ConsoleOutput.Instance};
+        /// <summary>
+        /// Gets a list of output buffers to which log messages are written.
+        /// </summary>
+        public List<IOutput> Outputs { get; } = new() {ConsoleOutput.Instance};
+
+        internal void Log<TState>(string name, LogLevel logLevel, EventId eventId, TState state, Exception exception,
+            Func<TState, Exception, string> formatter) => _logMessages.TryAdd(
+            (MessageFormatter ?? Logging.MessageFormatter.Default).Format(name, logLevel, eventId, state, exception,
+                formatter, this));
     }
 }
