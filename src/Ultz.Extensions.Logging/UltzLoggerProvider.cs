@@ -16,7 +16,12 @@ namespace Ultz.Extensions.Logging
         /// <summary>
         /// The default <see cref="MessageFormat" /> used by the default <see cref="MessageFormatter" />.
         /// </summary>
-        public const string DefaultFormat = "§8{4}{0}[{3}] §7{5:dd}/{5:MM}/{5:yyyy} {5:HH}:{5:mm}:{5:ss} [{1}] §f{2}";
+        public const string DefaultFormat = "§7[§3{5:HH}:{5:mm}:{5:ss}§7] [{1} §9{0}§7] §f{2}";
+        
+        /// <summary>
+        /// The default <see cref="MessageFormat" /> used by the default <see cref="MessageFormatter" />.
+        /// </summary>
+        public const string ExtendedDefaultFormat = "§8{4}{0}[{3}] §7{5:dd}/{5:MM}/{5:yyyy} {5:HH}:{5:mm}:{5:ss} [{1}] §f{2}";
 
         /// <summary>
         /// The default <see cref="LogLevels" /> used. Encapsulates all <see cref="LogLevel" /> values.

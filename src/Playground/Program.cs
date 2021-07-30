@@ -11,32 +11,30 @@ namespace Playground
         {
             // Demonstrating the multi-threadedness of our logger, and how it doesn't hold up execution for logging.
             
-            var provider = new UltzLoggerProvider();
-            var logger = provider.CreateLogger("Hi");
             for (var i = 0; i < 100; i++)
             {
                 switch (i % 5)
                 {
                     case 0:
-                        logger.LogInformation($"Message {i}");
+                        Log.Information($"Message {i}");
                         break;
                     case 1:
-                        logger.LogWarning($"Message {i}");
+                        Log.Warning($"Message {i}");
                         break;
                     case 2:
-                        logger.LogError($"Message {i}");
+                        Log.Error($"Message {i}");
                         break;
                     case 3:
-                        logger.LogTrace($"Message {i}");
+                        Log.Trace($"Message {i}");
                         break;
                     case 4:
-                        logger.LogDebug($"Message {i}");
+                        Log.Debug($"Message {i}");
                         break;
                 }
             }
             
             Console.WriteLine("Done1");
-            provider.WaitAndShutdown();
+            Log.Shutdown();
             Console.WriteLine("Done2");
         }
     }

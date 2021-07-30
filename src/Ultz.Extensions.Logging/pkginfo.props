@@ -3,11 +3,10 @@
         <Description>
             A Microsoft.Extensions.Logging.Abstractions implementation, only with more customaization and less faff.
         </Description>
-        <Version>4.0.0</Version>
+        <Version>4.1.0</Version>
         <LangVersion>9</LangVersion>
         <PackageReleaseNotes>
-            Everything is now controled by the logger provider. The UltzLogger type is now internal, and
-            IUltzLoggerObject removed.
+            Added a static wrapper class. Changed the default format, the old default is still available in ExtendedDefaultFormat.
         </PackageReleaseNotes>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
