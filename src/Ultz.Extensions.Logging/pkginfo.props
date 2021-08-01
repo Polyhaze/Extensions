@@ -3,10 +3,10 @@
         <Description>
             A Microsoft.Extensions.Logging.Abstractions implementation, only with more customaization and less faff.
         </Description>
-        <Version>4.1.0</Version>
+        <Version>4.1.1</Version>
         <LangVersion>9</LangVersion>
         <PackageReleaseNotes>
-            Added a static wrapper class. Changed the default format, the old default is still available in ExtendedDefaultFormat.
+            Fixed some bugs with the new wrapper class, change internal threading structure such that Shutdown is no longer necessary.
         </PackageReleaseNotes>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>

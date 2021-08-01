@@ -10,7 +10,6 @@ namespace Playground
         static void Main(string[] args)
         {
             // Demonstrating the multi-threadedness of our logger, and how it doesn't hold up execution for logging.
-            
             for (var i = 0; i < 100; i++)
             {
                 switch (i % 5)
@@ -34,7 +33,7 @@ namespace Playground
             }
             
             Console.WriteLine("Done1");
-            Log.Shutdown();
+            //Log.Shutdown();
             Console.WriteLine("Done2");
         }
     }

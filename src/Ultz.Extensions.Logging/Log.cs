@@ -62,7 +62,7 @@ namespace Ultz.Extensions.Logging
             Exception exception,
             string message,
             [CallerFilePath] string category = "")
-            => GetOrCreateLogger(Path.GetFileNameWithoutExtension(category)).LogDebug(eventId, exception, message);
+            => GetOrCreateLogger(Path.GetFileNameWithoutExtension(category))?.LogDebug(eventId, exception, message);
 
         /// <summary>
         /// Writes a debug log message.
@@ -73,7 +73,7 @@ namespace Ultz.Extensions.Logging
         public static void Debug(EventId eventId,
             string message,
             [CallerFilePath] string category = "")
-            => GetOrCreateLogger(Path.GetFileNameWithoutExtension(category)).LogDebug(eventId, message);
+            => GetOrCreateLogger(Path.GetFileNameWithoutExtension(category))?.LogDebug(eventId, message);
 
         /// <summary>
         /// Writes a debug log message.
@@ -84,7 +84,7 @@ namespace Ultz.Extensions.Logging
         public static void Debug(Exception exception,
             string message,
             [CallerFilePath] string category = "")
-            => GetOrCreateLogger(Path.GetFileNameWithoutExtension(category)).LogDebug(exception, message);
+            => GetOrCreateLogger(Path.GetFileNameWithoutExtension(category))?.LogDebug(exception, message);
 
         /// <summary>
         /// Writes a debug log message.
@@ -93,7 +93,7 @@ namespace Ultz.Extensions.Logging
         /// <param name="category">The caller file path. Do not specify manually, compiler inferred.</param>
         public static void Debug(string message,
             [CallerFilePath] string category = "")
-            => GetOrCreateLogger(Path.GetFileNameWithoutExtension(category)).LogDebug(message);
+            => GetOrCreateLogger(Path.GetFileNameWithoutExtension(category))?.LogDebug(message);
 
         /// <summary>
         /// Writes a trace log message.
@@ -106,7 +106,7 @@ namespace Ultz.Extensions.Logging
             Exception exception,
             string message,
             [CallerFilePath] string category = "")
-            => GetOrCreateLogger(Path.GetFileNameWithoutExtension(category)).LogTrace(eventId, exception, message);
+            => GetOrCreateLogger(Path.GetFileNameWithoutExtension(category))?.LogTrace(eventId, exception, message);
 
         /// <summary>
         /// Writes a trace log message.
@@ -117,7 +117,7 @@ namespace Ultz.Extensions.Logging
         public static void Trace(EventId eventId,
             string message,
             [CallerFilePath] string category = "")
-            => GetOrCreateLogger(Path.GetFileNameWithoutExtension(category)).LogTrace(eventId, message);
+            => GetOrCreateLogger(Path.GetFileNameWithoutExtension(category))?.LogTrace(eventId, message);
 
         /// <summary>
         /// Writes a trace log message.
@@ -128,7 +128,7 @@ namespace Ultz.Extensions.Logging
         public static void Trace(Exception exception,
             string message,
             [CallerFilePath] string category = "")
-            => GetOrCreateLogger(Path.GetFileNameWithoutExtension(category)).LogTrace(exception, message);
+            => GetOrCreateLogger(Path.GetFileNameWithoutExtension(category))?.LogTrace(exception, message);
 
         /// <summary>
         /// Writes a trace log message.
@@ -137,7 +137,7 @@ namespace Ultz.Extensions.Logging
         /// <param name="category">The caller file path. Do not specify manually, compiler inferred.</param>
         public static void Trace(string message,
             [CallerFilePath] string category = "")
-            => GetOrCreateLogger(Path.GetFileNameWithoutExtension(category)).LogTrace(message);
+            => GetOrCreateLogger(Path.GetFileNameWithoutExtension(category))?.LogTrace(message);
 
         /// <summary>
         /// Writes a information log message.
@@ -150,7 +150,7 @@ namespace Ultz.Extensions.Logging
             Exception exception,
             string message,
             [CallerFilePath] string category = "")
-            => GetOrCreateLogger(Path.GetFileNameWithoutExtension(category)).LogInformation(eventId, exception, message);
+            => GetOrCreateLogger(Path.GetFileNameWithoutExtension(category))?.LogInformation(eventId, exception, message);
 
         /// <summary>
         /// Writes a information log message.
@@ -161,7 +161,7 @@ namespace Ultz.Extensions.Logging
         public static void Information(EventId eventId,
             string message,
             [CallerFilePath] string category = "")
-            => GetOrCreateLogger(Path.GetFileNameWithoutExtension(category)).LogInformation(eventId, message);
+            => GetOrCreateLogger(Path.GetFileNameWithoutExtension(category))?.LogInformation(eventId, message);
 
         /// <summary>
         /// Writes a information log message.
@@ -172,7 +172,7 @@ namespace Ultz.Extensions.Logging
         public static void Information(Exception exception,
             string message,
             [CallerFilePath] string category = "")
-            => GetOrCreateLogger(Path.GetFileNameWithoutExtension(category)).LogInformation(exception, message);
+            => GetOrCreateLogger(Path.GetFileNameWithoutExtension(category))?.LogInformation(exception, message);
 
         /// <summary>
         /// Writes a information log message.
@@ -181,7 +181,7 @@ namespace Ultz.Extensions.Logging
         /// <param name="category">The caller file path. Do not specify manually, compiler inferred.</param>
         public static void Information(string message,
             [CallerFilePath] string category = "")
-            => GetOrCreateLogger(Path.GetFileNameWithoutExtension(category)).LogInformation(message);
+            => GetOrCreateLogger(Path.GetFileNameWithoutExtension(category))?.LogInformation(message);
 
         /// <summary>
         /// Writes a warning log message.
@@ -194,7 +194,7 @@ namespace Ultz.Extensions.Logging
             Exception exception,
             string message,
             [CallerFilePath] string category = "")
-            => GetOrCreateLogger(Path.GetFileNameWithoutExtension(category)).LogWarning(eventId, exception, message);
+            => GetOrCreateLogger(Path.GetFileNameWithoutExtension(category))?.LogWarning(eventId, exception, message);
 
         /// <summary>
         /// Writes a warning log message.
@@ -205,7 +205,7 @@ namespace Ultz.Extensions.Logging
         public static void Warning(EventId eventId,
             string message,
             [CallerFilePath] string category = "")
-            => GetOrCreateLogger(Path.GetFileNameWithoutExtension(category)).LogWarning(eventId, message);
+            => GetOrCreateLogger(Path.GetFileNameWithoutExtension(category))?.LogWarning(eventId, message);
 
         /// <summary>
         /// Writes a warning log message.
@@ -216,7 +216,7 @@ namespace Ultz.Extensions.Logging
         public static void Warning(Exception exception,
             string message,
             [CallerFilePath] string category = "")
-            => GetOrCreateLogger(Path.GetFileNameWithoutExtension(category)).LogWarning(exception, message);
+            => GetOrCreateLogger(Path.GetFileNameWithoutExtension(category))?.LogWarning(exception, message);
 
         /// <summary>
         /// Writes a warning log message.
@@ -225,7 +225,7 @@ namespace Ultz.Extensions.Logging
         /// <param name="category">The caller file path. Do not specify manually, compiler inferred.</param>
         public static void Warning(string message,
             [CallerFilePath] string category = "")
-            => GetOrCreateLogger(Path.GetFileNameWithoutExtension(category)).LogWarning(message);
+            => GetOrCreateLogger(Path.GetFileNameWithoutExtension(category))?.LogWarning(message);
 
         /// <summary>
         /// Writes a error log message.
@@ -238,7 +238,7 @@ namespace Ultz.Extensions.Logging
             Exception exception,
             string message,
             [CallerFilePath] string category = "")
-            => GetOrCreateLogger(Path.GetFileNameWithoutExtension(category)).LogError(eventId, exception, message);
+            => GetOrCreateLogger(Path.GetFileNameWithoutExtension(category))?.LogError(eventId, exception, message);
 
         /// <summary>
         /// Writes a error log message.
@@ -249,7 +249,7 @@ namespace Ultz.Extensions.Logging
         public static void Error(EventId eventId,
             string message,
             [CallerFilePath] string category = "")
-            => GetOrCreateLogger(Path.GetFileNameWithoutExtension(category)).LogError(eventId, message);
+            => GetOrCreateLogger(Path.GetFileNameWithoutExtension(category))?.LogError(eventId, message);
 
         /// <summary>
         /// Writes a error log message.
@@ -260,7 +260,7 @@ namespace Ultz.Extensions.Logging
         public static void Error(Exception exception,
             string message,
             [CallerFilePath] string category = "")
-            => GetOrCreateLogger(Path.GetFileNameWithoutExtension(category)).LogError(exception, message);
+            => GetOrCreateLogger(Path.GetFileNameWithoutExtension(category))?.LogError(exception, message);
 
         /// <summary>
         /// Writes a error log message.
@@ -269,7 +269,7 @@ namespace Ultz.Extensions.Logging
         /// <param name="category">The caller file path. Do not specify manually, compiler inferred.</param>
         public static void Error(string message,
             [CallerFilePath] string category = "")
-            => GetOrCreateLogger(Path.GetFileNameWithoutExtension(category)).LogError(message);
+            => GetOrCreateLogger(Path.GetFileNameWithoutExtension(category))?.LogError(message);
 
 
         /// <summary>
@@ -283,7 +283,7 @@ namespace Ultz.Extensions.Logging
             Exception exception,
             string message,
             [CallerFilePath] string category = "")
-            => GetOrCreateLogger(Path.GetFileNameWithoutExtension(category)).LogCritical(eventId, exception, message);
+            => GetOrCreateLogger(Path.GetFileNameWithoutExtension(category))?.LogCritical(eventId, exception, message);
 
         /// <summary>
         /// Writes a critical log message.
@@ -294,7 +294,7 @@ namespace Ultz.Extensions.Logging
         public static void Critical(EventId eventId,
             string message,
             [CallerFilePath] string category = "")
-            => GetOrCreateLogger(Path.GetFileNameWithoutExtension(category)).LogCritical(eventId, message);
+            => GetOrCreateLogger(Path.GetFileNameWithoutExtension(category))?.LogCritical(eventId, message);
 
         /// <summary>
         /// Writes a critical log message.
@@ -305,7 +305,7 @@ namespace Ultz.Extensions.Logging
         public static void Critical(Exception exception,
             string message,
             [CallerFilePath] string category = "")
-            => GetOrCreateLogger(Path.GetFileNameWithoutExtension(category)).LogCritical(exception, message);
+            => GetOrCreateLogger(Path.GetFileNameWithoutExtension(category))?.LogCritical(exception, message);
 
         /// <summary>
         /// Writes a critical log message.
@@ -314,7 +314,7 @@ namespace Ultz.Extensions.Logging
         /// <param name="category">The caller file path. Do not specify manually, compiler inferred.</param>
         public static void Critical(string message,
             [CallerFilePath] string category = "")
-            => GetOrCreateLogger(Path.GetFileNameWithoutExtension(category)).LogCritical(message);
+            => GetOrCreateLogger(Path.GetFileNameWithoutExtension(category))?.LogCritical(message);
 
         /// <summary>
         /// Writes a log message at the specified log level.
@@ -325,7 +325,7 @@ namespace Ultz.Extensions.Logging
         public static void Write(LogLevel logLevel,
             string message,
             [CallerFilePath] string category = "")
-            => GetOrCreateLogger(Path.GetFileNameWithoutExtension(category)).Log(logLevel, message);
+            => GetOrCreateLogger(Path.GetFileNameWithoutExtension(category))?.Log(logLevel, message);
 
         /// <summary>
         /// Writes a log message at the specified log level.
@@ -338,7 +338,7 @@ namespace Ultz.Extensions.Logging
             EventId eventId,
             string message,
             [CallerFilePath] string category = "")
-            => GetOrCreateLogger(Path.GetFileNameWithoutExtension(category)).Log(logLevel, eventId, message);
+            => GetOrCreateLogger(Path.GetFileNameWithoutExtension(category))?.Log(logLevel, eventId, message);
 
         /// <summary>
         /// Writes a log message at the specified log level.
@@ -351,7 +351,7 @@ namespace Ultz.Extensions.Logging
             Exception exception,
             string message,
             [CallerFilePath] string category = "")
-            => GetOrCreateLogger(Path.GetFileNameWithoutExtension(category)).Log(logLevel, exception, message);
+            => GetOrCreateLogger(Path.GetFileNameWithoutExtension(category))?.Log(logLevel, exception, message);
 
         /// <summary>
         /// Writes a log message at the specified log level.
@@ -366,11 +366,11 @@ namespace Ultz.Extensions.Logging
             Exception exception,
             string message,
             [CallerFilePath] string category = "")
-            => GetOrCreateLogger(Path.GetFileNameWithoutExtension(category)).Log(logLevel, eventId, exception, message);
+            => GetOrCreateLogger(Path.GetFileNameWithoutExtension(category))?.Log(logLevel, eventId, exception, message);
 
         /// <summary>
         /// Waits and shuts down the logger.
         /// </summary>
-        public static void Shutdown() => (LoggerProvider as UltzLoggerProvider)?.WaitAndShutdown();
+        public static void Shutdown() => (LoggerProvider as UltzLoggerProvider)?.Shutdown();
     }
 }

@@ -17,11 +17,12 @@ namespace Ultz.Extensions.Logging
         /// The default <see cref="MessageFormat" /> used by the default <see cref="MessageFormatter" />.
         /// </summary>
         public const string DefaultFormat = "§7[§3{5:HH}:{5:mm}:{5:ss}§7] [{1} §9{0}§7] §f{2}";
-        
+
         /// <summary>
         /// The default <see cref="MessageFormat" /> used by the default <see cref="MessageFormatter" />.
         /// </summary>
-        public const string ExtendedDefaultFormat = "§8{4}{0}[{3}] §7{5:dd}/{5:MM}/{5:yyyy} {5:HH}:{5:mm}:{5:ss} [{1}] §f{2}";
+        public const string ExtendedDefaultFormat =
+            "§8{4}{0}[{3}] §7{5:dd}/{5:MM}/{5:yyyy} {5:HH}:{5:mm}:{5:ss} [{1}] §f{2}";
 
         /// <summary>
         /// The default <see cref="LogLevels" /> used. Encapsulates all <see cref="LogLevel" /> values.
@@ -33,13 +34,13 @@ namespace Ultz.Extensions.Logging
         private readonly ConcurrentDictionary<string, UltzLogger> _loggers = new();
         private readonly CancellationTokenSource _cancellationToken = new();
         private readonly BlockingCollection<string> _logMessages = new();
-        private readonly ManualResetEventSlim _noMessagesResetEvent = new();
-        private readonly Task _logTask;
+        private readonly Func<bool> _coreWaitForIdle;
+        private Thread? _logThread;
 
         public UltzLoggerProvider()
         {
-            _logTask = Task.Run(CoreLog, _cancellationToken.Token);
             MessageFormatter = Logging.MessageFormatter.Default;
+            _coreWaitForIdle = () => _logThread is null;
         }
 
         /// <inheritdoc />
@@ -89,23 +90,21 @@ namespace Ultz.Extensions.Logging
         /// <summary>
         /// Waits until there is a window in which there are no messages being output to console.
         /// </summary>
-        public void WaitForIdle()
-        {
-            _noMessagesResetEvent.Wait();
-        }
+        [Obsolete("Methods which \"wait for idle\" are no longer accurate and should be deferred.")]
+        public void WaitForIdle() => SpinWait.SpinUntil(_coreWaitForIdle);
 
         /// <summary>
         /// Cancels the background logging task.
         /// </summary>
         /// <remarks>
-        /// This can't be undone, and is done automatically in the <see cref="Dispose" /> method. Generally there's no
-        /// reason to use this method.
+        /// Done automatically in the <see cref="Dispose" /> method. Generally there's no reason to use this method.
         /// </remarks>
-        public void Shutdown() => _cancellationToken.Cancel();
+        public void Shutdown() => _cancellationToken.Dispose();
 
         /// <summary>
         /// Equivalent to <see cref="WaitForIdle"/> and <see cref="Shutdown"/>.
         /// </summary>
+        [Obsolete("Methods which \"wait for idle\" are no longer accurate and should be deferred.")]
         public void WaitAndShutdown()
         {
             WaitForIdle();
@@ -114,9 +113,8 @@ namespace Ultz.Extensions.Logging
 
         private void CoreLog()
         {
-            foreach (var message in _logMessages.GetConsumingEnumerable(_cancellationToken.Token))
+            while (_logMessages.TryTake(out var message, 100, _cancellationToken.Token))
             {
-                _noMessagesResetEvent.Reset();
                 foreach (var writer in Outputs)
                 {
                     lock (writer)
@@ -129,12 +127,9 @@ namespace Ultz.Extensions.Logging
                         writer.Write(Environment.NewLine, null);
                     }
                 }
-
-                if (_logMessages.Count == 0)
-                {
-                    _noMessagesResetEvent.Set();
-                }
             }
+
+            _logThread = null;
         }
 
         /// <summary>
@@ -185,8 +180,18 @@ namespace Ultz.Extensions.Logging
         public List<IOutput> Outputs { get; } = new() {ConsoleOutput.Instance};
 
         internal void Log<TState>(string name, LogLevel logLevel, EventId eventId, TState state, Exception exception,
-            Func<TState, Exception, string> formatter) => _logMessages.TryAdd(
-            (MessageFormatter ?? Logging.MessageFormatter.Default).Format(name, logLevel, eventId, state, exception,
-                formatter, this));
+            Func<TState, Exception, string> formatter)
+        {
+            _logMessages.TryAdd(
+                (MessageFormatter ?? Logging.MessageFormatter.Default).Format(name, logLevel, eventId, state, exception,
+                    formatter, this));
+            if (_logThread is not null)
+            {
+                return;
+            }
+
+            _logThread = new Thread(CoreLog) {IsBackground = false};
+            _logThread.Start();
+        }
     }
 }
