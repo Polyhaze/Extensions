@@ -1,12 +1,12 @@
 ﻿<Project>
     <PropertyGroup>
         <Description>
-            A Microsoft.Extensions.Logging.Abstractions implementation, only with more customaization and less faff.
+            A Microsoft.Extensions.Logging.Abstractions implementation, only with more customization and less faff.
         </Description>
-        <Version>4.1.1</Version>
+        <Version>4.1.2</Version>
         <LangVersion>9</LangVersion>
         <PackageReleaseNotes>
-            Fixed some bugs with the new wrapper class, change internal threading structure such that Shutdown is no longer necessary.
+            Fixed a typo in the package description.
         </PackageReleaseNotes>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
