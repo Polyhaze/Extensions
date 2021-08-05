@@ -34,6 +34,7 @@ namespace Ultz.Extensions.Logging
         private readonly ConcurrentDictionary<string, UltzLogger> _loggers = new();
         private readonly CancellationTokenSource _cancellationToken = new();
         private readonly BlockingCollection<string> _logMessages = new();
+        private readonly object _syncRoot = new();
         private readonly Func<bool> _coreWaitForIdle;
         private Thread? _logThread;
 
@@ -190,8 +191,16 @@ namespace Ultz.Extensions.Logging
                 return;
             }
 
-            _logThread = new Thread(CoreLog) {IsBackground = false};
-            _logThread.Start();
+            lock (_syncRoot)
+            {
+                if (_logThread is not null)
+                {
+                    return;
+                }
+
+                _logThread = new(CoreLog) { IsBackground = false };
+                _logThread.Start();
+            }
         }
     }
 }
