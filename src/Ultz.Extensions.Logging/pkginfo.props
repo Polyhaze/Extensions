@@ -3,10 +3,10 @@
         <Description>
             A Microsoft.Extensions.Logging.Abstractions implementation, only with more customization and less faff.
         </Description>
-        <Version>4.1.3</Version>
+        <Version>4.1.4</Version>
         <LangVersion>9</LangVersion>
         <PackageReleaseNotes>
-            More threading fixes.
+            Fix a bug where the logger didn't respect log-levels.
         </PackageReleaseNotes>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>

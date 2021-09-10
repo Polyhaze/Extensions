@@ -183,6 +183,11 @@ namespace Ultz.Extensions.Logging
         internal void Log<TState>(string name, LogLevel logLevel, EventId eventId, TState state, Exception exception,
             Func<TState, Exception, string> formatter)
         {
+            if (!LogLevels.Contains(logLevel))
+            {
+                return;
+            }
+
             _logMessages.TryAdd(
                 (MessageFormatter ?? Logging.MessageFormatter.Default).Format(name, logLevel, eventId, state, exception,
                     formatter, this));
