@@ -6,7 +6,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Ultz.Extensions.Logging\Ultz.Extensions.Logging.csproj" />
+      <ProjectReference Include="..\libraries\Ultz.Extensions.Logging\Ultz.Extensions.Logging.csproj" />
     </ItemGroup>
 
 </Project>
