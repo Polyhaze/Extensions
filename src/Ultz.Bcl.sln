@@ -3,17 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26124.0
 MinimumVisualStudioVersion = 15.0.26124.0
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultz.Bcl.Half", "Ultz.Bcl.Half\Ultz.Bcl.Half.csproj", "{5A0440B5-A2FB-4317-86DF-EFE3A4513105}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultz.Bcl.Half", "libraries\Ultz.Bcl.Half\Ultz.Bcl.Half.csproj", "{5A0440B5-A2FB-4317-86DF-EFE3A4513105}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultz.Bcl.Half.Fallback", "Ultz.Bcl.Half.Fallback\Ultz.Bcl.Half.Fallback.csproj", "{D1BD5808-93F6-482C-BD3C-B54480A3FA6F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultz.Bcl.Half.Fallback", "libraries\Ultz.Bcl.Half.Fallback\Ultz.Bcl.Half.Fallback.csproj", "{D1BD5808-93F6-482C-BD3C-B54480A3FA6F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultz.Extensions.PrivacyEnhancedMail", "Ultz.Extensions.PrivacyEnhancedMail\Ultz.Extensions.PrivacyEnhancedMail.csproj", "{E2EA2D5F-BF2E-416E-9A18-E8560F01D43E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultz.Extensions.PrivacyEnhancedMail", "libraries\Ultz.Extensions.PrivacyEnhancedMail\Ultz.Extensions.PrivacyEnhancedMail.csproj", "{E2EA2D5F-BF2E-416E-9A18-E8560F01D43E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultz.Extensions.Logging", "Ultz.Extensions.Logging\Ultz.Extensions.Logging.csproj", "{47E1B959-365D-4D51-8476-EE5806A8AB13}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultz.Extensions.Logging", "libraries\Ultz.Extensions.Logging\Ultz.Extensions.Logging.csproj", "{47E1B959-365D-4D51-8476-EE5806A8AB13}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultz.Extensions.Commands", "Ultz.Extensions.Commands\Ultz.Extensions.Commands.csproj", "{B7157863-8A33-4D2F-B210-68E706DDF324}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultz.Extensions.Commands", "libraries\Ultz.Extensions.Commands\Ultz.Extensions.Commands.csproj", "{B7157863-8A33-4D2F-B210-68E706DDF324}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultz.Extensions.Events", "Ultz.Extensions.Events\Ultz.Extensions.Events.csproj", "{678EE11D-C01D-429B-ACEA-7F0F1BFDE1CC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultz.Extensions.Events", "libraries\Ultz.Extensions.Events\Ultz.Extensions.Events.csproj", "{678EE11D-C01D-429B-ACEA-7F0F1BFDE1CC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Playground", "Playground\Playground.csproj", "{57D7673C-74FD-432A-821D-17B7AABADB6D}"
 EndProject
